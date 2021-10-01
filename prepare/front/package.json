@@ -1,0 +1,22 @@
+{
+  "name": "react-nodebird-front",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next"
+  },
+  "author": "kyh",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "next": "^11.1.2",
+    "prop-types": "^15.7.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-react-hooks": "^4.2.0"
+  }
+}
