@@ -1,20 +1,39 @@
-import React from "react";
+//! AppLayout.js는 일부분이 공통인 것들
+import React, { useState } from "react";
 import PropTypes from "prop-types"; //! $npm install prop-types
 import Link from "next/link";
+import { Menu } from "antd";
+import {} from "@ant-design/icons";
+
 // prepare/front/pages/에서 index.js, profile.js, signup.js에 공통으로 사용할 layout
 const AppLayout = ({ children }) => {
+  const [current, setCurrent] = useState(false);
+
+  const handleClick = (e) => {
+    console.log("click ", e);
+    setCurrent(e.key);
+  };
+
   return (
     <div>
       <div>
-        <Link href="/">
-          <a>노드버드</a>
-        </Link>
-        <Link href="/profile">
-          <a>프로팔</a>
-        </Link>
-        <Link href="/signup">
-          <a>회원가입</a>
-        </Link>
+        <Menu onClick={handleClick} selectedKeys={[current]} mode="horizontal">
+          <Menu.Item>
+            <Link href="/">
+              <a>노드버드</a>
+            </Link>
+          </Menu.Item>
+          <Menu.Item>
+            <Link href="/profile">
+              <a>프로필</a>
+            </Link>
+          </Menu.Item>
+          <Menu.Item>
+            <Link href="/signup">
+              <a>회원가입</a>
+            </Link>
+          </Menu.Item>
+        </Menu>
       </div>
       {children}
     </div>
@@ -36,3 +55,7 @@ export default AppLayout;
 // $npm install --save-dev eslint
 // $npm install --save-dev eslint-plugin-import
 // $npm install --save-dev eslint-plugin-react-hooks
+
+// 3. antd && styled-components
+// $npm install antd styled-components @ant-design/icons
+// antd 사용 시 @ant-design/icons도 같이 해준다
