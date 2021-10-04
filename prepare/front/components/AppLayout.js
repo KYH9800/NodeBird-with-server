@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types"; //! $npm install prop-types
 import Link from "next/link";
-import { Menu } from "antd";
+import { Input, Menu, Row, Col } from "antd";
 import {} from "@ant-design/icons";
 import "antd/dist/antd.css"; // or 'antd/dist/antd.less'
 
@@ -14,7 +14,7 @@ const AppLayout = ({ children }) => {
     console.log("click ", e);
     setCurrent(e.key);
   };
-
+  // 반응형 그리드 xs: 모바일, sm: 태블릿, md: 작은 데스크탑
   return (
     <div>
       <div>
@@ -30,13 +30,28 @@ const AppLayout = ({ children }) => {
             </Link>
           </Menu.Item>
           <Menu.Item>
+            <Input.Search enterButton style={{ verticalAlign: "middle" }} />
+          </Menu.Item>
+          <Menu.Item>
             <Link href="/signup">
               <a>회원가입</a>
             </Link>
           </Menu.Item>
         </Menu>
+        <Row gutter={10}>
+          <Col xs={24} sm={6} md={6}>
+            왼쪽 메뉴
+          </Col>
+          <Col xs={24} sm={12} md={12}>
+            {children}
+          </Col>
+          <Col xs={24} sm={6} md={6}>
+            <a href="https://github.com/ko7452" target="_blank" rel="noreferrer noopener">
+              Made by Ko_YunHyeok
+            </a>
+          </Col>
+        </Row>
       </div>
-      {children}
     </div>
   );
 };
