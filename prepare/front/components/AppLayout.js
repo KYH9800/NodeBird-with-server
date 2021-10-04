@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Input, Menu, Row, Col } from "antd";
 import {} from "@ant-design/icons";
 import "antd/dist/antd.css"; // or 'antd/dist/antd.less'
-
+import styled from "styled-components";
 import UserProfile from "./UserProfile";
 import LoginForm from "./LoginForm";
 
@@ -29,7 +29,7 @@ const AppLayout = ({ children }) => {
             </Link>
           </Menu.Item>
           <Menu.Item>
-            <Input.Search enterButton style={{ verticalAlign: "middle" }} />
+            <SearchInput enterButton />
           </Menu.Item>
           <Menu.Item>
             <Link href="/signup">
@@ -45,7 +45,7 @@ const AppLayout = ({ children }) => {
             {children}
           </Col>
           <Col xs={24} sm={6} md={6}>
-            <a href="https://github.com/ko7452" target="_blank" rel="noreferrer noopener">
+            <a href="https://github.com/ko7452" target="_blank" rel="noopener noreferrer">
               Made by Ko_YunHyeok
             </a>
           </Col>
@@ -60,6 +60,11 @@ AppLayout.prototypes = {
 };
 
 export default AppLayout;
+
+// styled-components
+const SearchInput = styled(Input.Search)`
+  vertical-align: middle;
+`;
 
 // 1.
 // $npm install next / $npm install next@9 [@version]
