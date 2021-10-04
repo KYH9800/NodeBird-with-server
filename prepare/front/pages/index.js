@@ -6,12 +6,14 @@ import Head from "next/head";
 const Home = () => {
   return (
     // AppLayout으로 감싸진 태그가 children이다
-    <AppLayout>
+    <>
       <Head>
         <title>NodeBird</title>
       </Head>
-      <div>Hello, Next</div>
-    </AppLayout>
+      <AppLayout>
+        <div>Hello, Next</div>
+      </AppLayout>
+    </>
   );
 };
 
