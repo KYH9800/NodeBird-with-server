@@ -12,7 +12,7 @@ import LoginForm from "./LoginForm";
 // prepare/front/pages/에서 index.js, profile.js, signup.js에 공통으로 사용할 layout
 const AppLayout = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false); // [더미 데이터] 서버가 없을 때 로그인 유뮤 판단
-
+  // return 분분이 Virtual DOM
   // 반응형 그리드 xs: 모바일, sm: 태블릿, md: 작은 데스크탑
   return (
     <div>
@@ -39,7 +39,7 @@ const AppLayout = ({ children }) => {
         </Menu>
         <Row gutter={10}>
           <Col xs={24} sm={6} md={6}>
-            {isLoggedIn ? <UserProfile /> : <LoginForm />}
+            {isLoggedIn ? <UserProfile setIsLoggedIn={setIsLoggedIn} /> : <LoginForm setIsLoggedIn={setIsLoggedIn} />}
           </Col>
           <Col xs={24} sm={12} md={12}>
             {children}

@@ -3,7 +3,7 @@ import { Button, Form, Input } from "antd";
 import Link from "next/link";
 import styled from "styled-components"; // 태그 안에 객체 생성 뒤 style을 설정하면 렌더링 시 새로운 객체로 인식한다 때문에 styled-components 사용
 
-const LoginForm = () => {
+const LoginForm = ({ setIsLoggedIn }) => {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
 
@@ -16,8 +16,14 @@ const LoginForm = () => {
     setPassword(e.target.value);
   }, []);
 
+  // onFinish은 자동으로 e.preventDefault() 가 적용되어 있다
+  const onSubmitForm = useCallback(() => {
+    console.log(id, password);
+    setIsLoggedIn(true); // 로그인 상태 true
+  }, [id, password]); // 해당 값이 변할 때 함수를 기억
+
   return (
-    <Form>
+    <FormWrapper onFinish={onSubmitForm}>
       <div>
         <label htmlFor="user-id">아이디</label>
         <br />
@@ -38,7 +44,7 @@ const LoginForm = () => {
           </a>
         </Link>
       </ButtonWrapper>
-    </Form>
+    </FormWrapper>
   );
 };
 
@@ -47,4 +53,7 @@ export default LoginForm;
 // styled-components
 const ButtonWrapper = styled.div`
   margin-top: 10px;
+`;
+const FormWrapper = styled(Form)`
+  padding: 10px;
 `;
