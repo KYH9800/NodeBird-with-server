@@ -3,11 +3,12 @@ import React, { useState } from "react";
 import PropTypes from "prop-types"; //! $npm install prop-types
 import Link from "next/link";
 import { Input, Menu, Row, Col } from "antd";
-import {} from "@ant-design/icons";
 import "antd/dist/antd.css"; // or 'antd/dist/antd.less'
 import styled from "styled-components";
 import UserProfile from "./UserProfile";
 import LoginForm from "./LoginForm";
+import NicknameEditForm from "./NicknameEditForm";
+import FollowList from "./FollowList";
 
 // prepare/front/pages/에서 index.js, profile.js, signup.js에 공통으로 사용할 layout
 const AppLayout = ({ children }) => {
