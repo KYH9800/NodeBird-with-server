@@ -3,6 +3,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import Head from "next/head";
 import "antd/dist/antd.css"; // or 'antd/dist/antd.less'
+import wrapper from "../store/configureStore";
+
 // { Component } 는 index.js, profile.js, signup.js의 공통의 return component를 받아온다
 const NodeBird = ({ Component }) => {
   return (
@@ -21,4 +23,4 @@ NodeBird.PropTypes = {
   Component: PropTypes.elementType.isRequired,
 };
 
-export default NodeBird;
+export default wrapper.withRedux(NodeBird);
