@@ -11,7 +11,7 @@ import { useSelector } from "react-redux"; // npm install react-redux
 
 // prepare/front/pages/에서 index.js, profile.js, signup.js에 공통으로 사용할 layout
 const AppLayout = ({ children }) => {
-  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+  const { isLoggedIn } = useSelector((state) => state.user);
   // return 분분이 Virtual DOM
   // 반응형 그리드 xs: 모바일, sm: 태블릿, md: 작은 데스크탑
   return (
