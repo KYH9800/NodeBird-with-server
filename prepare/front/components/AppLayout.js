@@ -8,6 +8,7 @@ import styled from "styled-components";
 import UserProfile from "./UserProfile";
 import LoginForm from "./LoginForm";
 import { useSelector } from "react-redux"; // npm install react-redux
+import { createGlobalStyle } from "styled-components";
 
 // prepare/front/pages/에서 index.js, profile.js, signup.js에 공통으로 사용할 layout
 const AppLayout = ({ children }) => {
@@ -16,41 +17,40 @@ const AppLayout = ({ children }) => {
   // 반응형 그리드 xs: 모바일, sm: 태블릿, md: 작은 데스크탑
   return (
     <div>
-      <div>
-        <Menu mode="horizontal">
-          <Menu.Item>
-            <Link href="/">
-              <a>노드버드</a>
-            </Link>
-          </Menu.Item>
-          <Menu.Item>
-            <Link href="/profile">
-              <a>프로필</a>
-            </Link>
-          </Menu.Item>
-          <Menu.Item>
-            <SearchInput enterButton />
-          </Menu.Item>
-          <Menu.Item>
-            <Link href="/signup">
-              <a>회원가입</a>
-            </Link>
-          </Menu.Item>
-        </Menu>
-        <Row gutter={10}>
-          <Col xs={24} sm={6} md={6}>
-            {isLoggedIn ? <UserProfile /> : <LoginForm />}
-          </Col>
-          <Col xs={24} sm={12} md={12}>
-            {children}
-          </Col>
-          <Col xs={24} sm={6} md={6}>
-            <a href="https://github.com/ko7452" target="_blank" rel="noopener noreferrer">
-              Made by Ko_YunHyeok
-            </a>
-          </Col>
-        </Row>
-      </div>
+      <Global />
+      <Menu mode="horizontal">
+        <Menu.Item>
+          <Link href="/">
+            <a>노드버드</a>
+          </Link>
+        </Menu.Item>
+        <Menu.Item>
+          <Link href="/profile">
+            <a>프로필</a>
+          </Link>
+        </Menu.Item>
+        <Menu.Item>
+          <SearchInput enterButton />
+        </Menu.Item>
+        <Menu.Item>
+          <Link href="/signup">
+            <a>회원가입</a>
+          </Link>
+        </Menu.Item>
+      </Menu>
+      <Row gutter={10}>
+        <Col xs={24} sm={6} md={6}>
+          {isLoggedIn ? <UserProfile /> : <LoginForm />}
+        </Col>
+        <Col xs={24} sm={12} md={12}>
+          {children}
+        </Col>
+        <Col xs={24} sm={6} md={6}>
+          <a href="https://github.com/ko7452" target="_blank" rel="noopener noreferrer">
+            Made by Ko_YunHyeok
+          </a>
+        </Col>
+      </Row>
     </div>
   );
 };
@@ -62,6 +62,20 @@ AppLayout.prototypes = {
 export default AppLayout;
 
 // styled-components
+const Global = createGlobalStyle`
+  .ant-row {
+      margin-right: 0 !important;
+      margin-left: 0 !important;
+    }
+    
+    .ant-col:first-child {
+        padding-left: 0 !important;
+    }
+    
+    .ant-col:last-child {
+      padding-right: 0 !important;
+    }
+`;
 const SearchInput = styled(Input.Search)`
   vertical-align: middle;
 `;
