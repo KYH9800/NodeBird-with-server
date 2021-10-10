@@ -1,10 +1,10 @@
-import React, { useCallback, useState } from "react";
-import PropTypes from "prop-types";
+import React, { useCallback, useState } from 'react';
+import PropTypes from 'prop-types';
 // css
-import styled from "styled-components";
-import { PlusOutlined } from "@ant-design/icons";
+import styled from 'styled-components';
+import { PlusOutlined } from '@ant-design/icons';
 // components
-import ImagesZoom from "./ImagesZoom";
+import ImagesZoom from './ImagesZoom';
 
 const PostImages = ({ images }) => {
   const [showImagesZoom, setShowImagesZoom] = useState(false);
@@ -20,7 +20,7 @@ const PostImages = ({ images }) => {
   if (images.length === 1) {
     return (
       <>
-        <OneImage role="presentation" src={images[0].src} alt={images[0].src} onClick={onZoom} />
+        <OneImage role='presentation' src={images[0].src} alt={images[0].src} onClick={onZoom} />
         {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
       </>
     );
@@ -29,8 +29,8 @@ const PostImages = ({ images }) => {
     return (
       <>
         <div>
-          <TwoImage role="presentation" src={images[0].src} alt={images[0].src} onClick={onZoom} />
-          <TwoImage role="presentation" src={images[1].src} alt={images[1].src} onClick={onZoom} />
+          <TwoImage role='presentation' src={images[0].src} alt={images[0].src} onClick={onZoom} />
+          <TwoImage role='presentation' src={images[1].src} alt={images[1].src} onClick={onZoom} />
         </div>
         {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
       </>
@@ -40,8 +40,8 @@ const PostImages = ({ images }) => {
   return (
     <>
       <div>
-        <ImgRender role="presentation" src={images[0].src} alt={images[0].src} onClick={onZoom} />
-        <Div role="presentation" onClick={onZoom}>
+        <ImgRender role='presentation' src={images[0].src} alt={images[0].src} onClick={onZoom} />
+        <Div role='presentation' onClick={onZoom}>
           <PlusOutlined />
           <br />
           {images.length - 1} 개의 사진 더보기

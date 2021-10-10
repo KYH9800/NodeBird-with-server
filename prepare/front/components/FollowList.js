@@ -1,15 +1,15 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { List, Button, Card } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
-import styled from "styled-components";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { List, Button, Card } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
+import styled from 'styled-components';
 
 const FollowList = ({ header, data }) => {
   // <List /> antd 공식문서에 사용법 나와 있음(참고하기)
   return (
     <ListStyle
       grid={{ gutter: 4, xs: 2, md: 3 }}
-      size="small"
+      size='small'
       header={<div>{header}</div>}
       loadMore={
         <DivStyle>
@@ -20,7 +20,7 @@ const FollowList = ({ header, data }) => {
       dataSource={data}
       renderItem={(item) => (
         <ListItem>
-          <Card actions={[<LoadingOutlined key="loading" />]}>
+          <Card actions={[<LoadingOutlined key='loading' />]}>
             <Card.Meta description={item.nickname} />
           </Card>
         </ListItem>
