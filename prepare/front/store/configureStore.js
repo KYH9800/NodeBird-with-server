@@ -42,3 +42,16 @@ export default wrapper;
 
 //* redux-thunk
 // $npm install redux-thunk
+
+/*
+* Redux-thunk
+  - 비동기 action 하나에 동기 action을 여러개 dispatch 할 수 있다
+  - 요청, 성공, 실패 action(동기적)을 여러번 실행 할 수 있다
+! - Click이 여러번 되는 경우 요청이 누른 횟수만큼 간다
+! - 딜레이되는 부분을 직접 구현해야된다. 하지않을 경우 수없이 요청이 가므로 셀프 디도스 공격이 되버린다.
+* Redux-Saga
+! - Click이 여러번 발생해도 마직막 클릭만 요청을 보낸다
+! - 딜레이 되는 부분을 제공하여 편리하다
+! - Redux-Saga-throttle로 스크롤 시 수없이 가는 요청을 몇번 허용할지 제한이 가능하다
+! - Saga에서 제공하는 부분이 편리하므로 redux구현 시 복잡함에 따라 Saga 사용이 좋다
+*/
