@@ -31,3 +31,4 @@ PostCardContent.PropTypes = {
 export default PostCardContent;
 
 //? how to find hashTag whit split 해쉬태그를 어떻게 찾는지 구글링 검색
+//! 정규표현식은 regexr 참고
