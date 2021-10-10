@@ -21,3 +21,43 @@
  * reducer에서 return 시 return {...state, name: action.data} 이게 불변성이다.
  * javaScript에서는 {} === {} false다, const a = {}; const b = a; a === b // true
  * 참조관계 떄문에 ...state를 통해 객체를 항상 새로 만들어주어야 한다. */
+
+//! redux-Saga
+// '*' : generator - using yield
+let i = 0;
+const gen = function* () {
+  while (true) {
+    yield i++;
+  }
+};
+const g = gen();
+
+g.next(); // { value: 0 done: false }
+g.next(); // { value: 1 done: false }
+g.next(); // { value: 2 done: false }
+g.next(); // { value: 3 done: false }
+g.next(); // { value: 4 done: false }
+g.next(); // { value: ... done: false }
+
+const gen = function* () {
+  console.log('one');
+  yield 1;
+  console.log('two');
+  yield 2;
+  console.log('three');
+  yield 3;
+  console.log('four');
+  yield 4;
+  console.log('five');
+  yield 5;
+  return 6;
+};
+const g = gen();
+
+g.next(); // 'one' { value: 1, done: false }
+g.next(); // 'two' { value: 2, done: false }
+g.next(); // 'three' { value: 3, done: false }
+g.next(); // 'four' { value: 4, done: false }
+g.next(); // 'five' { value: 5, done: false }
+g.next(); // { value: 6, done: true }
+g.next(); // { value: undefinded, done: true }
