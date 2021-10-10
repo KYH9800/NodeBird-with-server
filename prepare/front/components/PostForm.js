@@ -1,25 +1,25 @@
-import React, { useCallback, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useCallback, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 // css
-import styled from "styled-components";
-import { Button, Form, Input } from "antd";
+import styled from 'styled-components';
+import { Button, Form, Input } from 'antd';
 // components
-import { addPost } from "../reducers/post";
+import { addPost } from '../reducers/post';
 
 const PostForm = () => {
   const { imagePaths } = useSelector((state) => state.post);
   const dispatch = useDispatch();
   const imageInput = useRef(); // 실제 DOM에 접근하기 위해 사용
-  const [text, setText] = useState("");
+  const [text, setText] = useState('');
 
   const onChangeText = useCallback((e) => {
     setText(e.target.value);
   }, []);
 
   const onSubmit = useCallback(() => {
-    console.log("onSubmit");
+    console.log('onSubmit');
     dispatch(addPost); // ADD_POST
-    setText(""); // 쨱쨱을 click 시 작성했던 글은 textArea에서 없어진다
+    setText(''); // 쨱쨱을 click 시 작성했던 글은 textArea에서 없어진다
   }, []);
 
   const onClickImageUpload = useCallback(() => {
@@ -27,12 +27,12 @@ const PostForm = () => {
   }, [imageInput.current]);
 
   return (
-    <FormStyle encType="multipart/form-data" onFinish={onSubmit}>
-      <Input.TextArea value={text} onChange={onChangeText} maxLength={140} placeholder="어떤 신기한 일이 있었나요?" />
+    <FormStyle encType='multipart/form-data' onFinish={onSubmit}>
+      <Input.TextArea value={text} onChange={onChangeText} maxLength={140} placeholder='어떤 신기한 일이 있었나요?' />
       <div>
-        <input type="file" multiple hidden ref={imageInput} />
+        <input type='file' multiple hidden ref={imageInput} />
         <Button onClick={onClickImageUpload}>이미지 업로드</Button>
-        <ButtonFloat type="primary" htmlType="submit">
+        <ButtonFloat type='primary' htmlType='submit'>
           짹짹
         </ButtonFloat>
       </div>

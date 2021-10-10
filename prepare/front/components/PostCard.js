@@ -1,14 +1,14 @@
-import React, { useState, useCallback } from "react";
-import { useSelector } from "react-redux";
-import PropTypes from "prop-types";
+import React, { useState, useCallback } from 'react';
+import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 // css
-import { Avatar, Button, Card, Popover, List, Comment } from "antd";
-import { RetweetOutlined, HeartOutlined, HeartTwoTone, MessageOutlined, EllipsisOutlined } from "@ant-design/icons";
-import styled from "styled-components";
+import { Avatar, Button, Card, Popover, List, Comment } from 'antd';
+import { RetweetOutlined, HeartOutlined, HeartTwoTone, MessageOutlined, EllipsisOutlined } from '@ant-design/icons';
+import styled from 'styled-components';
 // components
-import PostImages from "./PostImages";
-import CommentForm from "./CommentForm";
-import PostCardContent from "./PostCardContent";
+import PostImages from './PostImages';
+import CommentForm from './CommentForm';
+import PostCardContent from './PostCardContent';
 
 const PostCard = ({ post }) => {
   const [lieked, setLiked] = useState(false);
@@ -31,21 +31,21 @@ const PostCard = ({ post }) => {
       <Card
         cover={post.Images[0] && <PostImages images={post.Images} />}
         actions={[
-          <RetweetOutlined key="retweet" />,
+          <RetweetOutlined key='retweet' />,
           lieked ? (
-            <HeartTwoTone twoToneColor="#eb2f96" key="heart" onClick={onToggleLike} />
+            <HeartTwoTone twoToneColor='#eb2f96' key='heart' onClick={onToggleLike} />
           ) : (
-            <HeartOutlined key="heart" onClick={onToggleLike} />
+            <HeartOutlined key='heart' onClick={onToggleLike} />
           ),
-          <MessageOutlined key="message" onClick={onToggleComment} />,
+          <MessageOutlined key='message' onClick={onToggleComment} />,
           <Popover
-            key="more"
+            key='more'
             content={
               <Button.Group>
                 {id && post.User.id === id ? (
                   <>
                     <Button>수정</Button>
-                    <Button type="danger">삭제</Button>
+                    <Button type='danger'>삭제</Button>
                   </>
                 ) : (
                   <Button>신고</Button>
@@ -66,7 +66,7 @@ const PostCard = ({ post }) => {
           <CommentForm post={post} />
           <List
             header={`${post.Comments.length}개의 댓글`}
-            itemLayout="horizontal"
+            itemLayout='horizontal'
             dataSource={post.Comments}
             renderItem={(item) => (
               <li>

@@ -1,11 +1,11 @@
-import React from "react"; // next는 이 구문이 필요없다(써도 상관은 없다)
-import { useSelector } from "react-redux";
+import React from 'react'; // next는 이 구문이 필요없다(써도 상관은 없다)
+import { useSelector } from 'react-redux';
 // import Head from "next/head";
-import AppLayout from "../components/AppLayout";
-import Head from "next/head";
+import AppLayout from '../components/AppLayout';
+import Head from 'next/head';
 
-import PostForm from "../components/PostForm";
-import PostCard from "../components/PostCard";
+import PostForm from '../components/PostForm';
+import PostCard from '../components/PostCard';
 
 const Home = () => {
   const { isLoggedIn } = useSelector((state) => state.user);

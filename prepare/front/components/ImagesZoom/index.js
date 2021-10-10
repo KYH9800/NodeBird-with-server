@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import Slick from "react-slick";
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import Slick from 'react-slick';
 // styled-components
-import { Global, Overlay, Header, CloseBtn, SlickWrapper, ImgWrapper, Indicator } from "./styles";
+import { Global, Overlay, Header, CloseBtn, SlickWrapper, ImgWrapper, Indicator } from './styles';
 
 //! 이미지를 확대해서 볼 수 있다 ("개발자 코드는 자산이다. 나중에 필요 시 재활용이 가능하다.")
 const ImagesZoom = ({ images, onClose }) => {
@@ -32,7 +32,7 @@ const ImagesZoom = ({ images, onClose }) => {
           </Slick>
           <Indicator>
             <div>
-              {currentSlide + 1 + " "} /{images.length}
+              {currentSlide + 1 + ' '} /{images.length}
             </div>
           </Indicator>
         </div>

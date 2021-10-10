@@ -1,8 +1,8 @@
-import { HYDRATE } from "next-redux-wrapper"; // SSR(Server Side Rendering)을 위함
-import { combineReducers } from "redux"; // combineReducers은 reducer 함수를 합쳐주는 역할
+import { HYDRATE } from 'next-redux-wrapper'; // SSR(Server Side Rendering)을 위함
+import { combineReducers } from 'redux'; // combineReducers은 reducer 함수를 합쳐주는 역할
 // spliting reducer
-import user from "./user";
-import post from "./post";
+import user from './user';
+import post from './post';
 
 // async action creator(비동기) / redux-saga
 
@@ -12,7 +12,7 @@ const rootReducer = combineReducers({
   index: (state = {}, action) => {
     switch (action.type) {
       case HYDRATE:
-        console.log("HYDRATE", action);
+        console.log('HYDRATE', action);
         return {
           ...state,
           ...action.payload,
