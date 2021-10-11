@@ -4,18 +4,19 @@ import Link from 'next/link';
 import styled from 'styled-components'; // 태그 안에 객체 생성 뒤 style을 설정하면 렌더링 시 새로운 객체로 인식한다 때문에 styled-components 사용
 //* customHook 적용하기
 import useInput from '../hooks/useInput'; // 패턴이 비슷한데 조금씩 다른 것들 커스텀 훅으로 처리할 수 있다
-import { useDispatch } from 'react-redux'; // useDispatch()
-import { loginAction } from '../reducers/user';
+import { useDispatch, useSelector } from 'react-redux'; // useDispatch()
+import { loginRequestAction } from '../reducers/user';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
+  const { isLoggingIn } = useSelector((state) => state.user);
   const [id, onChangeId] = useInput('');
   const [password, onChangePassword] = useInput('');
 
   // onFinish은 자동으로 e.preventDefault() 가 적용되어 있다
   const onSubmitForm = useCallback(() => {
     console.log(id, password);
-    dispatch(loginAction({ id, password }));
+    dispatch(loginRequestAction({ id, password }));
   }, [id, password]); // 해당 값이 변할 때 함수를 기억
 
   return (
@@ -31,7 +32,7 @@ const LoginForm = () => {
         <Input name='user-password' type='password' value={password} onChange={onChangePassword} required />
       </div>
       <ButtonWrapper>
-        <Button type='primary' htmlType='submit' loading={false}>
+        <Button type='primary' htmlType='submit' loading={isLoggingIn}>
           로그인
         </Button>
         <Link href='/signup'>
