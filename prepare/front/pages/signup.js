@@ -1,14 +1,22 @@
 import React, { useCallback, useState } from 'react'; // next는 이 구문이 필요없다(써도 상관은 없다)
 // import Head from "next/head";
+// eslint-disable-next-line import/order
 import AppLayout from '../components/AppLayout';
 import Head from 'next/head';
 import { Button, Checkbox, Form, Input } from 'antd';
 import styled from 'styled-components';
 //* customHook 적용하기
+// eslint-disable-next-line import/order
 import useInput from '../hooks/useInput';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { SIGN_UP_REQUEST } from '../reducers/user';
 
 const Signup = () => {
-  const [id, onChangeId] = useInput(''); // customHook
+  const dispatch = useDispatch();
+  const { signUpLoading } = useSelector((state) => state.user);
+
+  const [email, onChangeEmail] = useInput(''); // customHook
   const [nickname, onChangeNickname] = useInput(''); // customHook
   const [password, onChangePassword] = useInput(''); // customHook
   // useState
@@ -23,6 +31,7 @@ const Signup = () => {
       setPasswordCheck(e.target.value);
       setPasswordError(e.target.value !== password); // 비밀번호 일치 여부 확인
     },
+    // eslint-disable-next-line comma-dangle
     [password]
   );
 
@@ -32,6 +41,7 @@ const Signup = () => {
     setTermError(false);
   }, []);
 
+  // eslint-disable-next-line consistent-return
   const onSubmit = useCallback(() => {
     if (password !== passwordCheck) {
       return setPasswordError(true);
@@ -39,7 +49,11 @@ const Signup = () => {
     if (!term) {
       return setTermError(true);
     }
-    console.log('server로 보낼 정보: ', id, nickname, password); //! server로 보낼 정보
+    console.log('server로 보낼 정보: ', email, nickname, password); //! server로 보낼 정보
+    dispatch({
+      type: SIGN_UP_REQUEST,
+      data: { email, password, nickname },
+    });
   }, [password, passwordCheck, term]);
 
   return (
@@ -49,34 +63,34 @@ const Signup = () => {
       </Head>
       <Form onFinish={onSubmit}>
         <div>
-          <label htmlFor='user-id'>아이디</label>
+          <label htmlFor="user-email">이메일</label>
           <br />
-          <Input value={id} required onChange={onChangeId} />
+          <Input name="user-email" type="email" value={email} required onChange={onChangeEmail} />
         </div>
         <div>
-          <label htmlFor='user-nick'>닉네임</label>
+          <label htmlFor="user-nickname">닉네임</label>
           <br />
-          <Input value={nickname} required onChange={onChangeNickname} />
+          <Input name="user-nickname" value={nickname} required onChange={onChangeNickname} />
         </div>
         <div>
-          <label htmlFor='user-password'>비밀번호</label>
+          <label htmlFor="user-password">비밀번호</label>
           <br />
-          <Input value={password} required onChange={onChangePassword} />
+          <Input name="user-password" value={password} required onChange={onChangePassword} />
         </div>
         <div>
-          <label htmlFor='user-password-check'>비밀번호 확인</label>
+          <label htmlFor="user-password-check">비밀번호 확인</label>
           <br />
-          <Input value={passwordCheck} required onChange={onChangePasswordCheck} />
+          <Input name="user-password-check" value={passwordCheck} required onChange={onChangePasswordCheck} />
           {passwordError && <ErrorMessage>비밀번호가 일치하지 않습니다.</ErrorMessage>}
         </div>
         <div>
-          <Checkbox name='user-term' checked={term} onChange={onChangeTerm}>
+          <Checkbox name="user-term" checked={term} onChange={onChangeTerm}>
             관리자의 말을 잘 들을 것을 동의합니다.
           </Checkbox>
           {termError && <ErrorMessage>약관에 동의하셔야 합니다.</ErrorMessage>}
         </div>
         <SubmitDiv>
-          <Button type='primary' htmlType='submit'>
+          <Button type="primary" htmlType="submit" loading={signUpLoading}>
             가입하기
           </Button>
         </SubmitDiv>
