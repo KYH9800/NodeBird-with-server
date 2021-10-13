@@ -12,7 +12,7 @@ import { createGlobalStyle } from 'styled-components';
 
 // prepare/front/pages/에서 index.js, profile.js, signup.js에 공통으로 사용할 layout
 const AppLayout = ({ children }) => {
-  const { isLoggedIn } = useSelector((state) => state.user);
+  const { me } = useSelector((state) => state.user);
   // return 분분이 Virtual DOM
   // 반응형 그리드 xs: 모바일, sm: 태블릿, md: 작은 데스크탑
   return (
@@ -40,7 +40,7 @@ const AppLayout = ({ children }) => {
       </Menu>
       <Row gutter={10}>
         <Col xs={24} sm={6} md={6}>
-          {isLoggedIn ? <UserProfile /> : <LoginForm />}
+          {me ? <UserProfile /> : <LoginForm />}
         </Col>
         <Col xs={24} sm={12} md={12}>
           {children}
