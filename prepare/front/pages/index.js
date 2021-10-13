@@ -8,7 +8,7 @@ import PostForm from '../components/PostForm';
 import PostCard from '../components/PostCard';
 
 const Home = () => {
-  const { isLoggedIn } = useSelector((state) => state.user);
+  const { logInDone } = useSelector((state) => state.user);
   const { mainPosts } = useSelector((state) => state.post);
   // 아래의 mainPosts.map에서 key 값은 바뀌는 값이면서 고유의 값인 post.id를 넣어준다
   return (
@@ -18,7 +18,7 @@ const Home = () => {
         <title>NodeBird</title>
       </Head>
       <AppLayout>
-        {isLoggedIn && <PostForm />}
+        {logInDone && <PostForm />}
         {mainPosts.map((post) => (
           <PostCard key={post.id} post={post} />
         ))}
