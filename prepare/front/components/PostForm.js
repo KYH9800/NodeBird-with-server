@@ -1,26 +1,28 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 // css
 import styled from 'styled-components';
 import { Button, Form, Input } from 'antd';
 // components
 import { addPost } from '../reducers/post';
+import useInput from '../hooks/useInput'; // custom hooks
 
 const PostForm = () => {
-  const { imagePaths } = useSelector((state) => state.post);
+  const { imagePaths, addPostDone } = useSelector((state) => state.post);
   const dispatch = useDispatch();
   const imageInput = useRef(); // 실제 DOM에 접근하기 위해 사용
-  const [text, setText] = useState('');
+  const [text, onChangeText, setText] = useInput('');
 
-  const onChangeText = useCallback((e) => {
-    setText(e.target.value);
-  }, []);
+  useEffect(() => {
+    if (addPostDone) {
+      setText(''); // 요청이가고 addPostDone이 true가 되면 그 때 비운다
+    }
+  }, [addPostDone]);
 
   const onSubmit = useCallback(() => {
     console.log('onSubmit');
-    dispatch(addPost); // ADD_POST
-    setText(''); // 쨱쨱을 click 시 작성했던 글은 textArea에서 없어진다
-  }, []);
+    dispatch(addPost(text)); // ADD_POST
+  }, [text]);
 
   const onClickImageUpload = useCallback(() => {
     imageInput.current.click();

@@ -1,4 +1,4 @@
-import { all, fork, delay, throttle, call } from '@redux-saga/core/effects';
+import { all, fork, delay, takeLatest, put } from '@redux-saga/core/effects';
 import axios from 'axios';
 // import reducer
 import {
