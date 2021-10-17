@@ -1,4 +1,4 @@
-import shortId from 'shortid';
+import shortId from 'shortid'; //* npm install shortid map에 키값으로 id를 랜덤하게 쓰게 해준다
 
 // mainPosts: [dummy data {...}, {...}, {...},]
 export const initialState = {
@@ -78,7 +78,7 @@ const dummyPost = (data) => ({
 });
 
 const dummyComment = (data) => ({
-  id: shortId.generate(), //* npm install shortid map에 키값으로 id를 랜덤하게 쓰게 해준다
+  id: shortId.generate(),
   content: data,
   User: {
     id: 1,
