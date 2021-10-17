@@ -1,3 +1,7 @@
+/* eslint-disable operator-linebreak */
+/* eslint-disable no-unused-vars */
+/* eslint-disable implicit-arrow-linebreak */
+/* eslint-disable indent */
 // configureStore.js (next redux)
 import { createWrapper } from 'next-redux-wrapper';
 import { applyMiddleware, compose, createStore } from 'redux';

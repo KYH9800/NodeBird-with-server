@@ -2,7 +2,6 @@ import React from 'react'; // next는 이 구문이 필요없다(써도 상관�
 import { useSelector } from 'react-redux';
 // import Head from "next/head";
 import AppLayout from '../components/AppLayout';
-import Head from 'next/head';
 
 import PostForm from '../components/PostForm';
 import PostCard from '../components/PostCard';
@@ -14,9 +13,6 @@ const Home = () => {
   return (
     // AppLayout으로 감싸진 태그가 children이다
     <>
-      <Head>
-        <title>NodeBird</title>
-      </Head>
       <AppLayout>
         {logInDone && <PostForm />}
         {mainPosts.map((post) => (

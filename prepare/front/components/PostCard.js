@@ -31,30 +31,33 @@ const PostCard = ({ post }) => {
       <Card
         cover={post.Images[0] && <PostImages images={post.Images} />}
         actions={[
-          <RetweetOutlined key='retweet' />,
+          <RetweetOutlined key="retweet" />,
           lieked ? (
-            <HeartTwoTone twoToneColor='#eb2f96' key='heart' onClick={onToggleLike} />
+            <HeartTwoTone twoToneColor="#eb2f96" key="heart" onClick={onToggleLike} />
           ) : (
-            <HeartOutlined key='heart' onClick={onToggleLike} />
+            <HeartOutlined key="heart" onClick={onToggleLike} />
           ),
-          <MessageOutlined key='message' onClick={onToggleComment} />,
+          <MessageOutlined key="message" onClick={onToggleComment} />,
           <Popover
-            key='more'
+            key="more"
             content={
+              // eslint-disable-next-line react/jsx-wrap-multilines
               <Button.Group>
                 {id && post.User.id === id ? (
                   <>
                     <Button>수정</Button>
-                    <Button type='danger'>삭제</Button>
+                    <Button type="danger">삭제</Button>
                   </>
                 ) : (
                   <Button>신고</Button>
                 )}
               </Button.Group>
-            }>
+            }
+          >
             <EllipsisOutlined />
           </Popover>,
-        ]}>
+        ]}
+      >
         <Card.Meta
           avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
           title={post.User.nickname}
@@ -66,7 +69,7 @@ const PostCard = ({ post }) => {
           <CommentForm post={post} />
           <List
             header={`${post.Comments.length}개의 댓글`}
-            itemLayout='horizontal'
+            itemLayout="horizontal"
             dataSource={post.Comments}
             renderItem={(item) => (
               <li>
