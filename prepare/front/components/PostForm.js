@@ -8,7 +8,7 @@ import { addPost } from '../reducers/post';
 import useInput from '../hooks/useInput'; // custom hooks
 
 const PostForm = () => {
-  const { imagePaths, addPostDone } = useSelector((state) => state.post);
+  const { imagePaths, addPostDone, addPostLoading } = useSelector((state) => state.post);
   const dispatch = useDispatch();
   const imageInput = useRef(); // 실제 DOM에 접근하기 위해 사용
   const [text, onChangeText, setText] = useInput('');
@@ -29,12 +29,12 @@ const PostForm = () => {
   }, [imageInput.current]);
 
   return (
-    <FormStyle encType='multipart/form-data' onFinish={onSubmit}>
-      <Input.TextArea value={text} onChange={onChangeText} maxLength={140} placeholder='어떤 신기한 일이 있었나요?' />
+    <FormStyle encType="multipart/form-data" onFinish={onSubmit}>
+      <Input.TextArea value={text} onChange={onChangeText} maxLength={140} placeholder="어떤 신기한 일이 있었나요?" />
       <div>
-        <input type='file' multiple hidden ref={imageInput} />
+        <input type="file" multiple hidden ref={imageInput} />
         <Button onClick={onClickImageUpload}>이미지 업로드</Button>
-        <ButtonFloat type='primary' htmlType='submit'>
+        <ButtonFloat type="primary" htmlType="submit" loading={addPostLoading}>
           짹짹
         </ButtonFloat>
       </div>

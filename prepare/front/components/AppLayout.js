@@ -15,6 +15,7 @@ import { useSelector } from 'react-redux'; // npm install react-redux
 import { createGlobalStyle } from 'styled-components';
 
 // prepare/front/pages/에서 index.js, profile.js, signup.js에 공통으로 사용할 layout
+// eslint-disable-next-line react/prop-types
 const AppLayout = ({ children }) => {
   const { me } = useSelector((state) => state.user);
   // return 분분이 Virtual DOM

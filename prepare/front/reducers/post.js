@@ -1,3 +1,5 @@
+import shortId from 'shortid'; //* npm install shortid map에 키값으로 id를 랜덤하게 쓰게 해준다
+
 // mainPosts: [dummy data {...}, {...}, {...},]
 export const initialState = {
   mainPosts: [
@@ -64,16 +66,25 @@ export const addComment = (data) => ({
   data,
 });
 
-const dummyPost = {
-  id: 2,
-  content: '더미 데이터 입니다.',
+const dummyPost = (data) => ({
+  id: shortId.generate(), //* npm install shortid map에 키값으로 id를 랜덤하게 쓰게 해준다
+  content: data,
   User: {
     id: 1,
     nickname: '혁이',
   },
   Images: [],
   Comments: [],
-};
+});
+
+const dummyComment = (data) => ({
+  id: shortId.generate(),
+  content: data,
+  User: {
+    id: 1,
+    nickname: '혁이',
+  },
+});
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -89,7 +100,7 @@ const reducer = (state = initialState, action) => {
       console.log('ADD_POST_SUCCESS');
       return {
         ...state,
-        mainPosts: [dummyPost, ...state.mainPosts],
+        mainPosts: [dummyPost(action.data), ...state.mainPosts],
         addPostLoading: false,
         addPostDone: true,
       };
@@ -106,12 +117,19 @@ const reducer = (state = initialState, action) => {
         addCommentDone: false,
         addCommentError: null,
       };
-    case ADD_COMMENT_SUCCESS:
+    case ADD_COMMENT_SUCCESS: {
+      const postIndex = state.mainPosts.findIndex((v) => v.id === action.data.postId);
+      const post = { ...state.mainPosts[postIndex] };
+      post.Comments = [dummyComment(action.data.content), ...post.Comments];
+      const mainPosts = [...state.mainPosts];
+      mainPosts[postIndex] = post;
       return {
         ...state,
+        mainPosts,
         addCommentLoading: false,
         addCommentDone: true,
       };
+    }
     case ADD_COMMENT_FAILURE:
       return {
         ...state,

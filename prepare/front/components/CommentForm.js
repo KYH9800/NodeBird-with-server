@@ -1,17 +1,19 @@
 import React, { useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import useInput from '../hooks/useInput';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
 // css
 import { Button, Form, Input } from 'antd';
 // reducer
 import { ADD_COMMENT_REQUEST } from '../reducers/post';
+// custom hooks
+import useInput from '../hooks/useInput';
 
+// eslint-disable-next-line react/prop-types
 const CommentForm = ({ post }) => {
   const dispatch = useDispatch();
-  const { addCommentDone } = useSelector((state) => state.post);
+  const { addCommentDone, addCommentLoading } = useSelector((state) => state.post);
   const id = useSelector((state) => state.user.me?.id);
   const [commentText, onChangeCommentText, setCommentText] = useInput('');
 
@@ -22,6 +24,7 @@ const CommentForm = ({ post }) => {
   }, [addCommentDone]);
 
   const onSumbitComment = useCallback(() => {
+    console.log(post.id, commentText);
     dispatch({
       type: ADD_COMMENT_REQUEST,
       data: { content: commentText, postId: post.id, userId: id },
@@ -33,7 +36,7 @@ const CommentForm = ({ post }) => {
       CommentForm
       <FormItem>
         <Input.TextArea value={commentText} onChange={onChangeCommentText} rows={4} />
-        <CommentButton type="primary" htmlType="submit">
+        <CommentButton type="primary" htmlType="submit" loading={addCommentLoading}>
           삐약
         </CommentButton>
       </FormItem>
@@ -50,10 +53,10 @@ export default CommentForm;
 const FormItem = styled(Form.Item)`
   position: relative;
   margin: 0px;
-  margin-bottom: 40px;
 `;
 const CommentButton = styled(Button)`
   position: absolute;
-  bottom: -40px;
   right: 0px;
+  bottom: -40px;
+  z-index: 1;
 `;

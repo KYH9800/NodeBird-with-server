@@ -32,7 +32,7 @@ const Signup = () => {
       setPasswordError(e.target.value !== password); // 비밀번호 일치 여부 확인
     },
     // eslint-disable-next-line comma-dangle
-    [password]
+    [password],
   );
 
   const onChangeTerm = useCallback((e) => {
@@ -54,7 +54,7 @@ const Signup = () => {
       type: SIGN_UP_REQUEST,
       data: { email, password, nickname },
     });
-  }, [password, passwordCheck, term]);
+  }, [email, password, passwordCheck, term]);
 
   return (
     <AppLayout>
