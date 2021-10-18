@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 // css
 import { Avatar, Button, Card, Popover, List, Comment } from 'antd';
@@ -9,14 +9,17 @@ import styled from 'styled-components';
 import PostImages from './PostImages';
 import CommentForm from './CommentForm';
 import PostCardContent from './PostCardContent';
+// reducer action
+import { REMOVE_POST_REQUEST } from '../reducers/post';
 
 const PostCard = ({ post }) => {
+  const dispatch = useDispatch();
+  const { removePostLoading } = useSelector((state) => state.post);
   const [lieked, setLiked] = useState(false);
   const [commentFormOpened, setCommentFormOpened] = useState(false);
 
   const { me } = useSelector((state) => state.user);
   const id = me?.id; // optional chaining 연산자 (me.id 있으면 참고하고 없으면 undefined)
-  // todo
 
   const onToggleLike = useCallback(() => {
     setLiked((prev) => !prev); // true를 false로 false를 true로
@@ -24,6 +27,13 @@ const PostCard = ({ post }) => {
 
   const onToggleComment = useCallback(() => {
     setCommentFormOpened((prev) => !prev);
+  }, []);
+
+  const onRemovePost = useCallback(() => {
+    dispatch({
+      type: REMOVE_POST_REQUEST,
+      data: post.id,
+    });
   }, []);
 
   return (
@@ -46,7 +56,9 @@ const PostCard = ({ post }) => {
                 {id && post.User.id === id ? (
                   <>
                     <Button>수정</Button>
-                    <Button type="danger">삭제</Button>
+                    <Button type="danger" onClick={onRemovePost} loading={removePostLoading}>
+                      삭제
+                    </Button>
                   </>
                 ) : (
                   <Button>신고</Button>
