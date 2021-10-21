@@ -12,7 +12,8 @@
     "node": true,
     "es6": true
   },
-  "extends": ["airbnb"],
+  // extends 영역 array 값 마지막에 "prettier" 을 추가 (formating 시 충돌 에러를 막아줌)
+  "extends": ["airbnb", "prettier"], // npm install --save-dev eslint-config-prettier
   "plugins": ["import", "react-hooks"],
   "rules": {
     "jsx-a11y/label-has-associated-control": "off",
@@ -24,8 +25,12 @@
     "react/jsx-one-expression-per-line": "off",
     "object-curly-newline": "off",
     "linebreak-style": "off",
-    "no-param-reassign": "off",
-    "disable-next-line comma-dangle": "off"
+    "disable-next-line comma-dangle": "off",
+    "consistent-return": "off",
+    "implicit-arrow-linebreak": "off",
+    "no-unused-vars": "off",
+    "no-param-reassign": "off", // immer 사용 시 draft 때문에 "off"
+    "react/prop-types": "off"
   }
 }
 /* npm install --save-dev */

@@ -1,21 +1,16 @@
-/* eslint-disable import/no-duplicates */
 //! AppLayout.js는 일부분이 공통인 것들
 import React from 'react';
+import { useSelector } from 'react-redux'; // npm install react-redux
 import PropTypes from 'prop-types'; //! $npm install prop-types
 import Link from 'next/link';
 import { Input, Menu, Row, Col } from 'antd';
 import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 // eslint-disable-next-line import/no-duplicates
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 import UserProfile from './UserProfile';
 import LoginForm from './LoginForm';
-// eslint-disable-next-line import/order
-import { useSelector } from 'react-redux'; // npm install react-redux
-// eslint-disable-next-line import/order
-import { createGlobalStyle } from 'styled-components';
 
 // prepare/front/pages/에서 index.js, profile.js, signup.js에 공통으로 사용할 layout
-// eslint-disable-next-line react/prop-types
 const AppLayout = ({ children }) => {
   const { me } = useSelector((state) => state.user);
   // return 분분이 Virtual DOM
@@ -24,20 +19,20 @@ const AppLayout = ({ children }) => {
     <div>
       <Global />
       <Menu mode="horizontal">
-        <Menu.Item>
+        <Menu.Item key="home">
           <Link href="/">
             <a>노드버드</a>
           </Link>
         </Menu.Item>
-        <Menu.Item>
+        <Menu.Item key="profile">
           <Link href="/profile">
             <a>프로필</a>
           </Link>
         </Menu.Item>
-        <Menu.Item>
+        <Menu.Item key="SearchInput">
           <SearchInput enterButton />
         </Menu.Item>
-        <Menu.Item>
+        <Menu.Item key="signup">
           <Link href="/signup">
             <a>회원가입</a>
           </Link>
