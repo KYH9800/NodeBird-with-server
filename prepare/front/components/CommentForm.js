@@ -44,7 +44,7 @@ const CommentForm = ({ post }) => {
   );
 };
 
-CommentForm.ropTypes = {
+CommentForm.propTypes = {
   post: PropTypes.object.isRequired,
 };
 

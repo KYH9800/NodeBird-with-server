@@ -1,5 +1,6 @@
-import React from 'react'; // next는 이 구문이 필요없다(써도 상관은 없다)
+import React, { useEffect } from 'react'; // next는 이 구문이 필요없다(써도 상관은 없다)
 import { useSelector } from 'react-redux';
+import Router from 'next/router';
 // import Head from "next/head";
 import AppLayout from '../components/AppLayout';
 // eslint-disable-next-line import/order
@@ -10,7 +11,15 @@ import FollowList from '../components/FollowList';
 
 const Profile = () => {
   const { me } = useSelector((state) => state.user);
-
+  // me data 안에 id 값이 없으면 홈으로, 있으면 리스트 보이기
+  useEffect(() => {
+    if (!(me && me.id)) {
+      Router.push('/');
+    }
+  }, [me && me.id]);
+  if (!me) {
+    return null;
+  }
   return (
     <>
       <Head>

@@ -99,13 +99,12 @@ const PostCard = ({ post }) => {
   );
 };
 
-PostCard.PropTypes = {
+//! err: Warning: Failed prop type: Invalid prop `post.id` of type `string` supplied to `PostCard`, expected `number`.
+// id: PropTypes.arrayOf(PropTypes.object), // error에 의해 제거
+// UserId: PropTypes.number,
+PostCard.propTypes = {
   post: PropTypes.shape({
-    id: PropTypes.number,
-    User: PropTypes.shape({
-      id: PropTypes.number,
-      nickname: PropTypes.string,
-    }),
+    User: PropTypes.object,
     content: PropTypes.string,
     createAt: PropTypes.object,
     Comments: PropTypes.arrayOf(PropTypes.object),
