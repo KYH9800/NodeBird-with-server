@@ -18,7 +18,7 @@ const AppLayout = ({ children }) => {
   return (
     <div>
       <Global />
-      <Menu mode="horizontal">
+      <PositionFixed mode="horizontal">
         <Menu.Item key="home">
           <Link href="/">
             <a>노드버드</a>
@@ -37,10 +37,10 @@ const AppLayout = ({ children }) => {
             <a>회원가입</a>
           </Link>
         </Menu.Item>
-      </Menu>
-      <Row gutter={10}>
+      </PositionFixed>
+      <RowSection gutter={10}>
         <Col xs={24} sm={6} md={6}>
-          {me ? <UserProfile /> : <LoginForm />}
+          <LoggedFixed>{me ? <UserProfile /> : <LoginForm />}</LoggedFixed>
         </Col>
         <Col xs={24} sm={12} md={12}>
           {children}
@@ -50,7 +50,7 @@ const AppLayout = ({ children }) => {
             Made by Ko_YunHyeok
           </a>
         </Col>
-      </Row>
+      </RowSection>
     </div>
   );
 };
@@ -63,6 +63,23 @@ AppLayout.prototypes = {
 export default AppLayout;
 
 // styled-components
+const LoggedFixed = styled.div`
+  position: fixed;
+  width: 25%;
+  top: 10;
+  z-index: 999;
+`;
+const PositionFixed = styled(Menu)`
+  position: fixed;
+  width: 100%;
+  left: 0;
+  top: 0;
+  right: 0;
+  z-index: 1000;
+`;
+const RowSection = styled(Row)`
+  padding-top: 48px;
+`;
 const Global = createGlobalStyle`
   .ant-row {
       margin-right: 0 !important;
