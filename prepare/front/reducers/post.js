@@ -3,62 +3,29 @@ import produce from 'immer'; // $npm install immer
 import faker from 'faker'; // $npm install faker
 // mainPosts: [ {...}, {...}, {...}, ] // Dummy Data
 export const initialState = {
-  mainPosts: [
-    {
-      id: 1,
-      User: {
-        id: 1,
-        nickname: '고윤혁',
-      },
-      content: '첫 번째 게시글 #해시태그 #익스프레스',
-      Images: [
-        {
-          id: shortId.generate(),
-          src: 'https://bookthumb-phinf.pstatic.net/cover/137/995/13799585.jpg?udate=20180726',
-        },
-        {
-          id: shortId.generate(),
-          src: 'https://gimg.gilbut.co.kr/book/BN001958/rn_view_BN001958.jpg',
-        },
-        {
-          id: shortId.generate(),
-          src: 'https://gimg.gilbut.co.kr/book/BN001998/rn_view_BN001998.jpg',
-        },
-      ],
-      Comments: [
-        {
-          id: shortId.generate(),
-          User: {
-            id: shortId.generate(),
-            nickname: 'nero',
-          },
-          content: '우와 더미 데이터다~!!',
-        },
-        {
-          id: shortId.generate(),
-          User: {
-            id: shortId.generate(),
-            nickname: 'hero',
-          },
-          content: '진짜 데이터가 담긴 API를 얼른 써보고 싶어요~',
-        },
-      ],
-    },
-  ],
+  mainPosts: [], // Dummy Data
   imagePaths: [], // 이미지 업로드 할 때 이미지 경로들이 여기에 저장
+  hasMorePosts: true, // 가져오려는 시도
+  // 게시글을 불러올때(무한 스크롤)
+  loadPostsLoading: false,
+  loadPostsDone: false,
+  loadPostsError: null,
+  // 게시글을 추가 할 때
   addPostLoading: false, // 게시글 추가가 완료가 됬을 때 true로 변한다
   addPostDone: false,
   addPostError: null,
+  // 게시글을 삭제
   removePostLoading: false,
   removePostDone: false,
   removePostError: null,
+  // 댓글 작성
   addCommentLoading: false,
   addCommentDone: false,
   addCommentError: null,
 };
-// 기존 dummy-data에 20개의 dummy-data를 faker로 생성해보자
-initialState.mainPosts = initialState.mainPosts.concat(
-  Array(20)
+
+export const generateDummyPost = (number) =>
+  Array(number)
     .fill()
     .map(() => ({
       id: shortId.generate(),
@@ -69,7 +36,7 @@ initialState.mainPosts = initialState.mainPosts.concat(
       content: faker.lorem.paragraph(),
       Images: [
         {
-          src: faker.image.imageUrl(), // 실제 아니고 Dummy Image를 쓰고 싶다면 placeholder.com
+          src: faker.image.image(), // 실제 아니고 Dummy Image를 쓰고 싶다면 placeholder.com
         },
       ],
       Comments: [
@@ -81,8 +48,12 @@ initialState.mainPosts = initialState.mainPosts.concat(
           content: faker.lorem.sentence(),
         },
       ],
-    })),
-);
+    }));
+
+// 처음에 화면을 로딩하는 action
+export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST';
+export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS';
+export const LOAD_POSTS_FAILURE = 'LOAD_POSTS_FAILURE';
 
 // action을 정의
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
@@ -133,6 +104,25 @@ const dummyComment = (data) => ({
 const reducer = (state = initialState, action) =>
   produce(state, (draft) => {
     switch (action.type) {
+      //* 게시글 불러오기(Infinite Scroll)
+      case LOAD_POSTS_REQUEST:
+        console.log('LOAD_POSTS_REQUEST');
+        draft.loadPostsLoading = true;
+        draft.loadPostsDone = false;
+        draft.loadPostsError = null;
+        break;
+      case LOAD_POSTS_SUCCESS:
+        console.log('LOAD_POSTS_SUCCESS');
+        draft.loadPostsLoading = false;
+        draft.loadPostsDone = true;
+        draft.mainPosts = action.data.concat(draft.mainPosts); // 기존 data + dummy 10개
+        console.log('mainPosts.length', draft.mainPosts.length);
+        draft.hasMorePosts = draft.mainPosts.length < 50; // 50개 보다 많아지면 false
+        break;
+      case LOAD_POSTS_FAILURE:
+        draft.loadPostsLoading = false;
+        draft.loadPostsError = action.error;
+        break;
       //* 게시물 추가
       case ADD_POST_REQUEST:
         console.log('ADD_POST_REQUEST');
