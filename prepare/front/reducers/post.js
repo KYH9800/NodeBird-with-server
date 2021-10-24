@@ -1,5 +1,6 @@
 import shortId from 'shortid'; // npm install shortid map에 키값으로 id를 랜덤하게 쓰게 해준다
 import produce from 'immer'; // $npm install immer
+import faker from 'faker'; // $npm install faker
 // mainPosts: [ {...}, {...}, {...}, ] // Dummy Data
 export const initialState = {
   mainPosts: [
@@ -55,6 +56,33 @@ export const initialState = {
   addCommentDone: false,
   addCommentError: null,
 };
+// 기존 dummy-data에 20개의 dummy-data를 faker로 생성해보자
+initialState.mainPosts = initialState.mainPosts.concat(
+  Array(20)
+    .fill()
+    .map(() => ({
+      id: shortId.generate(),
+      User: {
+        id: shortId.generate(),
+        nickname: faker.name.findName(),
+      },
+      content: faker.lorem.paragraph(),
+      Images: [
+        {
+          src: faker.image.imageUrl(), // 실제 아니고 Dummy Image를 쓰고 싶다면 placeholder.com
+        },
+      ],
+      Comments: [
+        {
+          User: {
+            id: shortId.generate(),
+            nickname: faker.name.findName(),
+          },
+          content: faker.lorem.sentence(),
+        },
+      ],
+    })),
+);
 
 // action을 정의
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';

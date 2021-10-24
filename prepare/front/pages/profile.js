@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react'; // next는 이 구문이 필요없다(써도 상관은 없다)
 import { useSelector } from 'react-redux';
 import Router from 'next/router';
-// import Head from "next/head";
-import AppLayout from '../components/AppLayout';
-// eslint-disable-next-line import/order
 import Head from 'next/head';
+
 // Form을 만들 때 ReactForm 라이브러리를 사용하는 것이 좋다
+import AppLayout from '../components/AppLayout';
 import NicknameEditForm from '../components/NicknameEditForm';
 import FollowList from '../components/FollowList';
 

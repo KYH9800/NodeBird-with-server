@@ -68,9 +68,10 @@ const Div = styled.div`
   text-align: center;
   vertical-align: middle;
 `;
+// 이미지가 한개일 때 크기를 설정
 const OneImage = styled.img`
-  max-height: 250px;
-  max-width: 180px;
+  /* max-height: 250px; */
+  /* max-width: 180px; */
 `;
 const TwoImage = styled.img`
   width: 50%;
