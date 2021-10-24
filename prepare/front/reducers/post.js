@@ -69,7 +69,7 @@ initialState.mainPosts = initialState.mainPosts.concat(
       content: faker.lorem.paragraph(),
       Images: [
         {
-          src: faker.image.imageUrl(),
+          src: faker.image.imageUrl(), // 실제 아니고 Dummy Image를 쓰고 싶다면 placeholder.com
         },
       ],
       Comments: [
