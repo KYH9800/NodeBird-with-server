@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import { Avatar, Button, Card } from 'antd';
+import Link from 'next/link';
 // react-redux
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutRequestAction } from '../reducers/user';
@@ -20,16 +21,20 @@ const UserProfile = () => {
           <br />
           {me.Posts.length}
         </div>,
-        <div key="following">
-          팔로잉
-          <br />
-          {me.Followings.length}
-        </div>,
-        <div key="follower">
-          팔로워
-          <br />
-          {me.Followers.length}
-        </div>,
+        <Link href="profile">
+          <div key="following">
+            팔로잉
+            <br />
+            {me.Followings.length}
+          </div>
+        </Link>,
+        <Link href="profile">
+          <div key="follower">
+            팔로워
+            <br />
+            {me.Followers.length}
+          </div>
+        </Link>,
       ]}
     >
       <Card.Meta avatar={<Avatar>{me.nickname[0]}</Avatar>} title={me.nickname} />
