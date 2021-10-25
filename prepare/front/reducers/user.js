@@ -1,16 +1,22 @@
 import produce from 'immer';
 
 export const initialState = {
-  logInLoading: false, // 로그인 시도중
+  followLoading: false, //* 팔로우 시도중
+  followDone: false,
+  followError: null,
+  unFollowLoading: false, //* 언팔로우 시도중
+  unFollowDone: false,
+  unFollowError: null,
+  logInLoading: false, //* 로그인 시도중
   logInDone: false,
   logInError: null,
-  logOutLoading: false, // 로그아웃 시도중
+  logOutLoading: false, //* 로그아웃 시도중
   logOutDone: false,
   logOutError: null,
-  signUpLoading: false, // 회원가입 시도중
+  signUpLoading: false, //* 회원가입 시도중
   signUpDone: false,
   signUpError: null,
-  changeNicknameLoading: false, // 닉네임 변경 시도중
+  changeNicknameLoading: false, //* 닉네임 변경 시도중
   changeNicknameDone: false,
   changeNicknameError: null,
   me: null,
@@ -69,6 +75,35 @@ export const logoutRequestAction = () => ({
 const reducer = (state = initialState, action) =>
   produce(state, (draft) => {
     switch (action.type) {
+      //* 팔로우 && 언팔로우
+      case FOLLOW_REQUEST: // 팔로우
+        draft.followLoading = true;
+        draft.followDone = false;
+        draft.followError = null;
+        break;
+      case FOLLOW_SUCCESS:
+        draft.followLoading = false;
+        draft.followDone = true;
+        draft.me.Followings.push({ id: action.data });
+        break;
+      case FOLLOW_FAILURE:
+        draft.followLoading = false;
+        draft.followError = action.error;
+        break;
+      case UNFOLLOW_REQUEST: // 언팔로우
+        draft.unFollowLoading = true;
+        draft.unFollowDone = false;
+        draft.unFollowError = null;
+        break;
+      case UNFOLLOW_SUCCESS:
+        draft.unFollowLoading = false;
+        draft.unFollowDone = true;
+        draft.me.Followings = draft.me.Followings.filter((v) => v.id !== action.data);
+        break;
+      case UNFOLLOW_FAILURE:
+        draft.unFollowLoading = false;
+        draft.unFollowError = action.error;
+        break;
       //* 로그인
       case LOG_IN_REQUEST:
         draft.logInLoading = true;
