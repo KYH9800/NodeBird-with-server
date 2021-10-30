@@ -2,6 +2,7 @@ const express = require('express');
 
 const app = express();
 
+//* router
 app.get('/', (req, res) => {
   console.log(req.url, req.method);
   res.send('hello express');
@@ -21,14 +22,14 @@ app.get('/api/posts', (req, res) => {
   ]);
 });
 
-//* 생성하기
+//* 생성하기 (postman Tools)
 app.post('/api/post', (req, res) => {
   res.json({ id: 1, content: 'hello 01' });
 });
 
 //* 삭제하기
 app.delete('/api/post', (req, res) => {
-  // todo
+  res.json({ id: 1 });
 });
 
 // http://localhost:3065/
@@ -44,3 +45,15 @@ app.listen(3065, () => {
 
 //? 기본 node http보다 코드를 깔끔하고 구조적으로 짤수 있는 express를 설치한다
 //? $npm install express
+
+/* 자주쓰는 것들
+  app.get : 가져오다
+  app.post : 생성하다
+  app.put : 전체 수정
+  app.delete : 제거
+  app.patch : 부분 수정 (닉네임 변경, 게시글 content 수정)
+  app.options : 찔러보기 - '나 요청 보낼 수 있어? 서버야, 보내면 받아줄거야?'
+  app.head : header만 가져오기(header/body-본문)
+*/
+
+// rest API list에 관한 문서는 Swagger를 사용해보는 것도 좋다
