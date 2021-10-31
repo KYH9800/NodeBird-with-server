@@ -1,5 +1,7 @@
 const express = require('express');
 
+const postRouter = require('./routes/post');
+
 const app = express();
 
 //* router
@@ -8,13 +10,13 @@ app.get('/', (req, res) => {
   res.send('hello express');
 });
 
-app.get('/api', (req, res) => {
+app.get('/', (req, res) => {
   console.log(req.url, req.method);
   res.send('hello api');
 });
 
 //* 가져오기
-app.get('/api/posts', (req, res) => {
+app.get('/posts', (req, res) => {
   res.json([
     { id: 1, content: 'hello 01' },
     { id: 2, content: 'hello 02' },
@@ -22,15 +24,7 @@ app.get('/api/posts', (req, res) => {
   ]);
 });
 
-//* 생성하기 (postman Tools)
-app.post('/api/post', (req, res) => {
-  res.json({ id: 1, content: 'hello 01' });
-});
-
-//* 삭제하기
-app.delete('/api/post', (req, res) => {
-  res.json({ id: 1 });
-});
+app.use('/post', postRouter);
 
 // http://localhost:3065/
 app.listen(3065, () => {
