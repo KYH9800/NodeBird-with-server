@@ -2,20 +2,20 @@
   "development": {
     "username": "root",
     "password": "3115dbsgur!",
-    "database": "react-nodebird",
+    "database": "react_nodebird",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "test": {
     "username": "root",
-    "password": null,
-    "database": "react-nodebird",
+    "password": "3115dbsgur!",
+    "database": "react_nodebird",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "production": {
     "username": "root",
-    "password": null,
+    "password": "3115dbsgur!",
     "database": "database_production",
     "host": "127.0.0.1",
     "dialect": "mysql"

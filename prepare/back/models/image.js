@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   Image.associate = (db) => {
-    // todo
+    db.Image.belongsTo(db.Post);
   };
   return Image;
 };

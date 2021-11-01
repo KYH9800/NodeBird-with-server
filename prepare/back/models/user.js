@@ -25,8 +25,18 @@ module.exports = (sequelize, DataTypes) => {
       collate: 'utf8_general_ci', // 한글 저장
     }
   );
+  // sequelize 관계 설정하기
   User.associate = (db) => {
-    // todo
+    db.User.hasMany(db.Post); // 한 사람이 Post(게시글)를 여러개 가질 수 있다(작성자는 한명)
+    db.User.hasMany(db.Comment); // 한 사람이 댓글을 여러개 쓸 수 있다(작성자는 한명)
+    // as로 별칭을 정하는 것이 좋다
+    db.User.belongsToMany(db.Post, { through: 'Like', as: 'Liked' }); // 내가 좋아요를 누른 게시물
+    // through: 테이블 이름을 변경
+    // foreignKey: column의 key를 변경, 같은 테이블일때 먼저 찾는 것을 정의 (반대로 생각하면 된다)
+    db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followers', foreignKey: 'FollowingId' });
+    db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followings', foreignKey: 'FollowerId' });
   };
   return User;
 };
+
+// 사용자 정보 1 : 1, db.User.hasOne(db.UserInfo); >> db.UserInfo.belongsTo(db.User);

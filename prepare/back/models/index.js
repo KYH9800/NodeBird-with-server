@@ -1,4 +1,5 @@
-const Sequelize = require('sequelize');
+const { Sequelize } = require('sequelize');
+
 const env = process.env.NODE_ENV || 'development'; // 환경변수 설정, 기본값(|| 기본값 연산자)
 const config = require('../config/config')[env]; // json 객체의 development 불러오기
 const db = {};
