@@ -10,13 +10,13 @@ app.get('/', (req, res) => {
   res.send('hello express');
 });
 
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
   console.log(req.url, req.method);
   res.send('hello api');
 });
 
 //* 가져오기
-app.get('/posts', (req, res) => {
+app.get('/api/posts', (req, res) => {
   res.json([
     { id: 1, content: 'hello 01' },
     { id: 2, content: 'hello 02' },
@@ -24,7 +24,7 @@ app.get('/posts', (req, res) => {
   ]);
 });
 
-app.use('/post', postRouter);
+app.use('/post', postRouter); // prefix
 
 // http://localhost:3065/
 app.listen(3065, () => {
