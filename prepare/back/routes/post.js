@@ -27,4 +27,6 @@ MySQLWorkbench 설치
 ..
 5. config/config.js에서 개발모드 username, password, database 설정 - "port": 3306
 6. modules/index.js 에서 sequelize, db 연결
+
+7. $npx sequelize db:create MySQL workbanch // 서버연결
  */

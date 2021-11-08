@@ -1,8 +1,18 @@
 const express = require('express');
-
 const postRouter = require('./routes/post');
-
+const db = require('./models');
 const app = express();
+
+//* promiss, 서버 실행할 때 db/sequelize 연결도 같이 해준다
+db.sequelize
+  .sync()
+  .then(() => {
+    console.log('db 연결 성공');
+  })
+  .catch(console.error);
+//! $npx sequelize db:create
+//? $npm i -D nodemon >> nodemon app.js 로 서버를 실행
+//? package.json - "scripts" { "dev": "nodemon app"}
 
 //* router
 app.get('/', (req, res) => {
@@ -28,7 +38,7 @@ app.use('/post', postRouter); // prefix
 
 // http://localhost:3065/
 app.listen(3065, () => {
-  console.log('서버 실행 중');
+  console.log('서버 실행 중입니다.');
 }); // 사용할 포트
 
 // app.js를 node가 실행하면 http를 통해 server가 작동한다 / http가 server가 되는 것
