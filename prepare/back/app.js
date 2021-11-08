@@ -1,8 +1,18 @@
 const express = require('express');
-
 const postRouter = require('./routes/post');
-
+const db = require('./models');
 const app = express();
+
+//* promiss, 서버 실행할 때 db/sequelize 연결도 같이 해준다
+db.sequelize
+  .sync()
+  .then(() => {
+    console.log('db 연결 성공');
+  })
+  .catch(console.error);
+//! $npx sequelize db:create
+//? $npm i -D nodemon >> nodemon app.js 로 서버를 실행
+//? package.json - "scripts" { "dev": "nodemon app"}
 
 //* router
 app.get('/', (req, res) => {
@@ -10,13 +20,13 @@ app.get('/', (req, res) => {
   res.send('hello express');
 });
 
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
   console.log(req.url, req.method);
   res.send('hello api');
 });
 
 //* 가져오기
-app.get('/posts', (req, res) => {
+app.get('/api/posts', (req, res) => {
   res.json([
     { id: 1, content: 'hello 01' },
     { id: 2, content: 'hello 02' },
@@ -24,11 +34,11 @@ app.get('/posts', (req, res) => {
   ]);
 });
 
-app.use('/post', postRouter);
+app.use('/post', postRouter); // prefix
 
 // http://localhost:3065/
 app.listen(3065, () => {
-  console.log('서버 실행 중');
+  console.log('서버 실행 중입니다.');
 }); // 사용할 포트
 
 // app.js를 node가 실행하면 http를 통해 server가 작동한다 / http가 server가 되는 것
