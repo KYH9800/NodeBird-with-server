@@ -1,8 +1,9 @@
 const express = require('express');
+const app = express();
 const postRouter = require('./routes/post');
 const userRouter = require('./routes/user');
 const db = require('./models');
-const app = express();
+const cors = require('cors'); // $npm install cors
 
 //* promiss, 서버 실행할 때 db/sequelize 연결도 같이 해준다
 // $npx sequelize db:create
@@ -14,6 +15,13 @@ db.sequelize
     console.log('db 연결 성공');
   })
   .catch(console.error);
+//! cors 문제해결
+app.use(
+  cors({
+    origin: '*', // 'https://nodebird.com
+    credentials: false, // default
+  })
+);
 
 // routes의 req.body를 사용하기 위해 설정 (작성 위치 중요, get, use, listen위에 작성)
 app.use(express.json());

@@ -1,20 +1,28 @@
-import React, { useCallback, useState } from 'react'; // next는 이 구문이 필요없다(써도 상관은 없다)
-// import Head from "next/head";
-// eslint-disable-next-line import/order
-import AppLayout from '../components/AppLayout';
+import React, { useCallback, useEffect, useState } from 'react'; // next는 이 구문이 필요없다(써도 상관은 없다)
 import Head from 'next/head';
+import Router from 'next/router';
 import { Button, Checkbox, Form, Input } from 'antd';
 import styled from 'styled-components';
-//* customHook 적용하기
-// eslint-disable-next-line import/order
-import useInput from '../hooks/useInput';
 import { useDispatch, useSelector } from 'react-redux';
-
 import { SIGN_UP_REQUEST } from '../reducers/user';
+import AppLayout from '../components/AppLayout';
+import useInput from '../hooks/useInput'; //* customHook 적용하기
 
 const Signup = () => {
   const dispatch = useDispatch();
-  const { signUpLoading } = useSelector((state) => state.user);
+  const { signUpLoading, signUpDone, signUpError } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (signUpDone) {
+      Router.push('/');
+    }
+  }, [signUpDone]);
+
+  useEffect(() => {
+    if (signUpError) {
+      alert(signUpError);
+    }
+  }, [signUpError]);
 
   const [email, onChangeEmail] = useInput(''); // customHook
   const [nickname, onChangeNickname] = useInput(''); // customHook
@@ -75,12 +83,18 @@ const Signup = () => {
         <div>
           <label htmlFor="user-password">비밀번호</label>
           <br />
-          <Input name="user-password" value={password} required onChange={onChangePassword} />
+          <Input type="password" name="user-password" value={password} required onChange={onChangePassword} />
         </div>
         <div>
           <label htmlFor="user-password-check">비밀번호 확인</label>
           <br />
-          <Input name="user-password-check" value={passwordCheck} required onChange={onChangePasswordCheck} />
+          <Input
+            type="password"
+            name="user-password-check"
+            value={passwordCheck}
+            required
+            onChange={onChangePasswordCheck}
+          />
           {passwordError && <ErrorMessage>비밀번호가 일치하지 않습니다.</ErrorMessage>}
         </div>
         <div>
