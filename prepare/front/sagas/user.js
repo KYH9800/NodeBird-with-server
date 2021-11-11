@@ -73,12 +73,12 @@ function* signUp(action) {
     console.log(result);
     yield put({
       type: SIGN_UP_SUCCESS,
-    });
+    }); // 200
   } catch (err) {
     yield put({
       type: SIGN_UP_FAILURE,
       error: err.response.data,
-    });
+    }); // 400, 500
   }
 }
 

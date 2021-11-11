@@ -21,8 +21,10 @@ router.post('/', async (req, res) => {
     await User.create({
       email: req.body.email,
       nickname: req.body.nickname,
-      password: hashedPassword, // $npm install bcrypt (비밀번호 암호화 라이브러리)
+      password: hashedPassword, // $npm install bcrypt (비밀번호 암호화 라이브러리) / hash
     });
+    // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3060'); // 해당 포트만 허용하겠다
+    // res.setHeader('Access-Control-Allow-Origin', '*'); // 모든 서버를 허용하겠다.
     res.status(201).send('OK'); //! 응답(res)이 2번이 가는경우 can't set headers already sent 에러메세지
   } catch (error) {
     console.error(error);
