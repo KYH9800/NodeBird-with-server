@@ -21,17 +21,16 @@ import {
 
 // LOG_IN
 function logInAPI(data) {
-  return axios.post('/api/login', data); // 실제로 서버에 요청을 보냄
+  return axios.post('/user/login', data); // 실제로 서버에 요청을 보냄
 }
 // 요청이 실패할 경우를 대비 try, catch를 사용
 function* logIn(action) {
   try {
     console.log('saga login');
-    // const result = yield call(logInAPI, action.data); //! call은 동기 함수로 결과가 와야 실행된다
-    yield delay(1000); // setTimeout 역할 (dummyData를 사용할 동안만 delay 사용)
+    const result = yield call(logInAPI, action.data); //! call은 동기 함수로 결과가 와야 실행된다
     yield put({
       type: LOG_IN_SUCCESS,
-      data: action.data, // 성공 결과의 data
+      data: result.data, // 성공 결과의 data
     });
   } catch (err) {
     yield put({
@@ -43,7 +42,7 @@ function* logIn(action) {
 
 // LOG_OUT
 function logOutAPI(/* generator 아님 */) {
-  return axios.post('/api/logout'); // 실제로 서버에 요청을 보냄
+  return axios.post('/user/logout'); // 실제로 서버에 요청을 보냄
 }
 // 요청이 실패할 경우를 대비 try, catch를 사용
 function* logOut(action) {
@@ -64,7 +63,7 @@ function* logOut(action) {
 
 // SIGN_UP
 function signUpAPI(data) {
-  return axios.post('http://localhost:3065/user', data);
+  return axios.post('/user', data);
 }
 
 function* signUp(action) {
