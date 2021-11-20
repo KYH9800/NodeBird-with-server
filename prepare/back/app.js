@@ -1,9 +1,11 @@
 const express = require('express');
 const app = express();
+const cors = require('cors'); // $npm install cors
+
 const postRouter = require('./routes/post');
 const userRouter = require('./routes/user');
 const db = require('./models');
-const cors = require('cors'); // $npm install cors
+const passportConfig = require('./passport');
 
 //* promiss, 서버 실행할 때 db/sequelize 연결도 같이 해준다
 // $npx sequelize db:create
@@ -22,6 +24,8 @@ app.use(
     credentials: false, // default
   })
 );
+
+passportConfig();
 
 // routes의 req.body를 사용하기 위해 설정 (작성 위치 중요, get, use, listen위에 작성)
 app.use(express.json());

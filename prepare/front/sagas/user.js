@@ -38,7 +38,7 @@ function* logIn(action) {
       error: err.response.data, // 실패 결과는 err.response.data에 담겨있음
     });
   }
-}
+} // $npm install passport passport-local
 
 // LOG_OUT
 function logOutAPI(/* generator 아님 */) {

@@ -1,10 +1,31 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
+const passport = require('passport');
 const { User } = require('../models');
 
 const router = express.Router();
+// err: 서버에러, user: 성공객체, info: 정보 // middleware 확장
+router.post('/login', (req, res, next) => {
+  passport.authenticate('local', (err, user, info) => {
+    if (err) {
+      console.error(err);
+      next(err);
+    }
+    if (info) {
+      return res.status(401).send(info.reason); // client로 응답을 보내줌, 401: 허가되지 않음, 403: 금지
+    }
+    return req.login(user, async (loginErr) => {
+      if (loginErr) {
+        console.error(loginErr);
+        return next(loginErr);
+      }
+      return res.json(user);
+    });
+  })(req, res, next);
+}); // 로그인 전략 실행
+
 /* async - await: 비동기 프로그래밍, POST /user/ */
-router.post('/', async (req, res) => {
+router.post('/', async (req, res, next) => {
   try {
     // 가입 전에 중복확인, 입력한 계정이 존재하는지 찾아본다
     const exUser = await User.findOne({
