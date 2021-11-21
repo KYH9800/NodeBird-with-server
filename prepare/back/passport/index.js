@@ -7,10 +7,8 @@ module.exports = () => {
   passport.serializeUser(() => {
     // todo
   });
-
   passport.deserializeUser(() => {
     // todo
   });
-
   local();
 };

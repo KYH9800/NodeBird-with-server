@@ -1,9 +1,11 @@
-const express = require('express');
+// npde에서 제공하는 http module이 서버다
+const express = require('express'); // express 내부적으로 http를 사용해서 서버를 돌릴 수 있다
 const app = express();
 const cors = require('cors'); // $npm install cors
 
 const postRouter = require('./routes/post');
 const userRouter = require('./routes/user');
+
 const db = require('./models');
 const passportConfig = require('./passport');
 
@@ -17,15 +19,15 @@ db.sequelize
     console.log('db 연결 성공');
   })
   .catch(console.error);
-//! cors 문제해결
-app.use(
-  cors({
-    origin: '*', // 'https://nodebird.com
-    credentials: false, // default
-  })
-);
 
-passportConfig();
+//? CORS(Cross-origin resource sharing) 문제해결
+const corsOptions = {
+  origin: '*', // 'https://nodebird.com
+  credentials: false, // default
+};
+app.use(cors(corsOptions));
+
+passportConfig(); // passport
 
 // routes의 req.body를 사용하기 위해 설정 (작성 위치 중요, get, use, listen위에 작성)
 app.use(express.json());
@@ -68,13 +70,13 @@ app.listen(3065, () => {
 //? $npm install express
 
 /* 자주쓰는 것들
-  app.get : 가져오다
-  app.post : 생성하다
-  app.put : 전체 수정
-  app.delete : 제거
-  app.patch : 부분 수정 (닉네임 변경, 게시글 content 수정)
-  app.options : 찔러보기 - '나 요청 보낼 수 있어? 서버야, 보내면 받아줄거야?'
-  app.head : header만 가져오기(header/body-본문)
-*/
+ * app.get : 가져오다
+ * app.post : 생성하다
+ * app.put : 전체 수정
+ * app.delete : 제거
+ * app.patch : 부분 수정 (닉네임 변경, 게시글 content 수정)
+ * app.options : 찔러보기 - '나 요청 보낼 수 있어? 서버야, 보내면 받아줄거야?'
+ * app.head : header만 가져오기(header/body-본문)
+ */
 
 // rest API list에 관한 문서는 Swagger를 사용해보는 것도 좋다
