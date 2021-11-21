@@ -41,8 +41,8 @@ router.post('/', async (req, res, next) => {
     const hashedPassword = await bcrypt.hash(req.body.password, 12); // 숫자가 높을 수록 보안수준 강화, 서버의 속도에 따라 적절한 숫자를 찾는 것이 좋다
     await User.create({
       email: req.body.email,
-      nickname: req.body.nickname,
       password: hashedPassword, // $npm install bcrypt (비밀번호 암호화 라이브러리) / hash
+      nickname: req.body.nickname,
     });
     // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3060'); // 해당 포트만 허용하겠다
     // res.setHeader('Access-Control-Allow-Origin', '*'); // 모든 서버를 허용하겠다.
