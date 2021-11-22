@@ -10,7 +10,13 @@ import useInput from '../hooks/useInput'; //* customHook 적용하기
 
 const Signup = () => {
   const dispatch = useDispatch();
-  const { signUpLoading, signUpDone, signUpError } = useSelector((state) => state.user);
+  const { signUpLoading, signUpDone, signUpError, me } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (me && me.id) {
+      Router.replace('/'); // 페이지가 없어짐
+    }
+  }, [me && me.id]);
 
   useEffect(() => {
     if (signUpDone) {

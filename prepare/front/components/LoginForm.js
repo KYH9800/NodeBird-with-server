@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'; // useDispatch()
 import { Button, Form, Input } from 'antd';
 import Link from 'next/link';
@@ -9,9 +9,15 @@ import { loginRequestAction } from '../reducers/user';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
-  const { logInLoading } = useSelector((state) => state.user);
+  const { logInLoading, logInError } = useSelector((state) => state.user);
   const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
+
+  useEffect(() => {
+    if (logInError) {
+      alert(logInError);
+    }
+  }, [logInError]);
 
   // onFinish은 자동으로 e.preventDefault() 가 적용되어 있다
   const onSubmitForm = useCallback(() => {
