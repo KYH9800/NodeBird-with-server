@@ -9,7 +9,7 @@ module.exports = () => {
   });
   passport.deserializeUser(async (id, done) => {
     try {
-      const user = await User.findOne({ where: { id }, include: [{ model: Posts }] });
+      const user = await User.findOne({ where: { id } });
       done(null, user); // 전달 받은 id를 통해서 user 정보를 가져옴 // req.user
     } catch (err) {
       console.error(err);

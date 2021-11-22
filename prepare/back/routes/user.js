@@ -1,7 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
-const { User } = require('../models');
+const { User, Post } = require('../models');
 
 const router = express.Router();
 // err: 서버에러, user: 성공객체, info: 정보 // middleware 확장
@@ -19,8 +19,26 @@ router.post('/login', (req, res, next) => {
         console.error(loginErr);
         return next(loginErr);
       }
-      // res.setHeader('Cookie', 'cS34RtY2'); // cookie가 랜덤한 문자열을 보냄, session과도 연결해줌
-      return res.status(200).json(user);
+      const fullUserWithoutPassword = await User.findOne({
+        where: { id: user.id },
+        attributes: {
+          exclude: ['password'], // 원하는 정보만 가져오거나 가져오지 않겠다 / 현재: pw 빼고 다 가져오겠다
+        },
+        include: [
+          {
+            model: Post,
+          },
+          {
+            model: User,
+            as: 'Followers',
+          },
+          {
+            model: User,
+            as: 'Followings',
+          },
+        ], // 가져올 정보중 뺄 것들
+      });
+      return res.status(200).json(fullUserWithoutPassword);
     });
   })(req, res, next);
 }); // 로그인 전략 실행
@@ -33,7 +51,6 @@ router.post('/', async (req, res, next) => {
       where: {
         email: req.body.email,
       },
-      include: [{ model: Posts }],
     });
     // 계정이 존재하면 403
     if (exUser) {
@@ -55,7 +72,7 @@ router.post('/', async (req, res, next) => {
   }
 });
 
-router.post('/user/logout', (req, res) => {
+router.post('/logout', (req, res) => {
   req.logout();
   req.session.destroy();
   res.send('logout ok');

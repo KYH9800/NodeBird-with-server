@@ -47,8 +47,7 @@ function logOutAPI(/* generator 아님 */) {
 // 요청이 실패할 경우를 대비 try, catch를 사용
 function* logOut(action) {
   try {
-    // const result = yield call(logOutAPI);
-    yield delay(1000); // setTimeout 역할
+    yield call(logOutAPI);
     yield put({
       type: LOG_OUT_SUCCESS,
       data: action.data, // 성공 결과의 data
