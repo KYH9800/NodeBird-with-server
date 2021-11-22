@@ -63,6 +63,9 @@ app.get('/api/posts', (req, res) => {
 
 app.use('/post', postRouter); // prefix
 app.use('/user', userRouter);
+
+// app.use((err, req, res, next) => {...}); error처리 미들웨어
+
 // http://localhost:3065/
 app.listen(3065, () => {
   console.log('서버 실행 중입니다.');
