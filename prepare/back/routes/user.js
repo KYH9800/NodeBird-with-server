@@ -2,10 +2,11 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 const { User, Post } = require('../models');
+const { isLogedIn, isNotLogedIn } = require('./middlewares');
 
 const router = express.Router();
 // err: 서버에러, user: 성공객체, info: 정보 // middleware 확장
-router.post('/login', (req, res, next) => {
+router.post('/login', isNotLogedIn, (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if (err) {
       console.error(err);
@@ -44,7 +45,7 @@ router.post('/login', (req, res, next) => {
 }); // 로그인 전략 실행
 
 /* async - await: 비동기 프로그래밍, POST /user/ */
-router.post('/', async (req, res, next) => {
+router.post('/', isNotLogedIn, async (req, res, next) => {
   try {
     // 가입 전에 중복확인, 입력한 계정이 존재하는지 찾아본다
     const exUser = await User.findOne({
@@ -72,7 +73,7 @@ router.post('/', async (req, res, next) => {
   }
 });
 
-router.post('/logout', (req, res) => {
+router.post('/logout', isLogedIn, (req, res) => {
   req.logout();
   req.session.destroy();
   res.send('logout ok');
