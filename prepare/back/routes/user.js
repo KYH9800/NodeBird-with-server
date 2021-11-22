@@ -19,7 +19,8 @@ router.post('/login', (req, res, next) => {
         console.error(loginErr);
         return next(loginErr);
       }
-      return res.json(user);
+      // res.setHeader('Cookie', 'cS34RtY2'); // cookie가 랜덤한 문자열을 보냄, session과도 연결해줌
+      return res.status(200).json(user);
     });
   })(req, res, next);
 }); // 로그인 전략 실행
@@ -32,6 +33,7 @@ router.post('/', async (req, res, next) => {
       where: {
         email: req.body.email,
       },
+      include: [{ model: Posts }],
     });
     // 계정이 존재하면 403
     if (exUser) {
@@ -51,6 +53,12 @@ router.post('/', async (req, res, next) => {
     console.error(error);
     next(error); // status 500 // next 통해서 err를 보낼 수 있다, error들이 한방에 처리가 된다
   }
+});
+
+router.post('/user/logout', (req, res) => {
+  req.logout();
+  req.session.destroy();
+  res.send('logout ok');
 });
 
 module.exports = router;

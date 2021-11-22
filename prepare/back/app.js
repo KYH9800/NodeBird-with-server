@@ -2,6 +2,10 @@
 const express = require('express'); // express 내부적으로 http를 사용해서 서버를 돌릴 수 있다
 const app = express();
 const cors = require('cors'); // $npm install cors
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const passport = require('passport');
+require('dotenv').config();
 
 const postRouter = require('./routes/post');
 const userRouter = require('./routes/user');
@@ -32,6 +36,10 @@ passportConfig(); // passport
 // routes의 req.body를 사용하기 위해 설정 (작성 위치 중요, get, use, listen위에 작성)
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser(process.env.COOKIESCRET)); // dotenv
+app.use(session({ saveUninitialized: false, resave: false, secret: process.env.COOKIESCRET })); // dotenv
+app.use(passport.initialize());
+app.use(passport.session());
 
 //* router
 app.get('/', (req, res) => {
