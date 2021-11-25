@@ -5,6 +5,46 @@ const { User, Post } = require('../models');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 
 const router = express.Router();
+
+// 현재 CSR인 상태 >> 이후 CCR로 서버사이드 렌더링(Next.js)
+router.get('/', async (req, res, next) => {
+  try {
+    if (req.user) {
+      const user = await User.findOne({
+        where: { id: req.user.id },
+      });
+      const fullUserWithoutPassword = await User.findOne({
+        where: { id: req.user.id },
+        attributes: {
+          exclude: ['password'], // 원하는 정보만 가져오거나 가져오지 않겠다 / 현재: pw 빼고 다 가져오겠다
+        },
+        include: [
+          {
+            model: Post,
+            attributes: ['id'],
+          },
+          {
+            model: User,
+            as: 'Followers',
+            attributes: ['id'],
+          },
+          {
+            model: User,
+            as: 'Followings',
+            attributes: ['id'],
+          },
+        ], // 가져올 정보중 뺄 것들
+      });
+      res.status(200).json(fullUserWithoutPassword);
+    } else {
+      res.status(200).json(null);
+    }
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+}); // GET /user
+
 // err: 서버에러, user: 성공객체, info: 정보 // middleware 확장
 router.post('/login', isNotLoggedIn, (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {

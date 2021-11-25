@@ -37,7 +37,13 @@ passportConfig(); // passport
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIESCRET)); // dotenv
-app.use(session({ saveUninitialized: false, resave: false, secret: process.env.COOKIESCRET })); // dotenv
+app.use(
+  session({
+    saveUninitialized: false,
+    resave: false,
+    secret: process.env.COOKIESCRET,
+  })
+); // dotenv
 app.use(passport.initialize());
 app.use(passport.session());
 
