@@ -1,4 +1,4 @@
-exports.isLogedIn = (req, res, next) => {
+exports.isLoggedIn = (req, res, next) => {
   if (req.isAuthenticated()) {
     next(); // 비어있으면 다음 미들웨어로 간다
   } else {
@@ -6,7 +6,7 @@ exports.isLogedIn = (req, res, next) => {
   }
 };
 
-exports.isNotLogedIn = (req, res, next) => {
+exports.isNotLoggedIn = (req, res, next) => {
   if (!req.isAuthenticated()) {
     next(); // 비어있으면 다음 미들웨어로 간다
   } else {
