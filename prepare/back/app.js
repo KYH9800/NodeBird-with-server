@@ -26,8 +26,8 @@ db.sequelize
 
 //? CORS(Cross-origin resource sharing) 문제해결
 const corsOptions = {
-  origin: '*', // 'https://nodebird.com
-  credentials: false, // default
+  origin: 'http://localhost:3060', // 'https://nodebird.com or "true"
+  credentials: true, // default: false
 };
 app.use(cors(corsOptions));
 
