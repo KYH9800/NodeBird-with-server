@@ -1,6 +1,4 @@
-import shortId from 'shortid'; // npm install shortid map에 키값으로 id를 랜덤하게 쓰게 해준다
 import produce from 'immer'; // $npm install immer
-import faker from 'faker'; // $npm install faker
 // mainPosts: [ {...}, {...}, {...}, ] // Dummy Data
 export const initialState = {
   mainPosts: [], // Dummy Data
@@ -23,32 +21,6 @@ export const initialState = {
   addCommentDone: false,
   addCommentError: null,
 };
-
-export const generateDummyPost = (number) =>
-  Array(number)
-    .fill()
-    .map(() => ({
-      id: shortId.generate(),
-      User: {
-        id: shortId.generate(),
-        nickname: faker.name.findName(),
-      },
-      content: faker.lorem.paragraph(),
-      Images: [
-        {
-          src: faker.image.image(), // 실제 아니고 Dummy Image를 쓰고 싶다면 placeholder.com
-        },
-      ],
-      Comments: [
-        {
-          User: {
-            id: shortId.generate(),
-            nickname: faker.name.findName(),
-          },
-          content: faker.lorem.sentence(),
-        },
-      ],
-    }));
 
 // 처음에 화면을 로딩하는 action
 export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST';
@@ -92,11 +64,9 @@ const reducer = (state = initialState, action) =>
         draft.loadPostsError = null;
         break;
       case LOAD_POSTS_SUCCESS:
-        console.log('LOAD_POSTS_SUCCESS');
         draft.loadPostsLoading = false;
         draft.loadPostsDone = true;
         draft.mainPosts = action.data.concat(draft.mainPosts); // 기존 data + dummy 10개
-        console.log('mainPosts.length', draft.mainPosts.length);
         draft.hasMorePosts = draft.mainPosts.length < 50; // 50개 보다 많아지면 false
         break;
       case LOAD_POSTS_FAILURE:
