@@ -6,8 +6,10 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
 require('dotenv').config();
+const morgan = require('morgan');
 
 const postRouter = require('./routes/post');
+const postsRouter = require('./routes/posts');
 const userRouter = require('./routes/user');
 
 const db = require('./models');
@@ -24,7 +26,7 @@ db.sequelize
   })
   .catch(console.error);
 
-//? CORS(Cross-origin resource sharing) 문제해결
+app.use(morgan('dev')); // 요청과 응답을 기록하는 모듈
 const corsOptions = {
   origin: 'http://localhost:3060', // 'https://nodebird.com or "true"
   credentials: true, // default: false
@@ -53,16 +55,8 @@ app.get('/', (req, res) => {
   res.send('hello express');
 });
 
-//* 가져오기
-app.get('/api/posts', (req, res) => {
-  res.json([
-    { id: 1, content: 'hello 01' },
-    { id: 2, content: 'hello 02' },
-    { id: 3, content: 'hello 03' },
-  ]);
-});
-
 app.use('/post', postRouter); // prefix
+app.use('/posts', postsRouter);
 app.use('/user', userRouter);
 
 // app.use((err, req, res, next) => {...}); error처리 미들웨어
@@ -71,15 +65,6 @@ app.use('/user', userRouter);
 app.listen(3065, () => {
   console.log('서버 실행 중입니다.');
 }); // 사용할 포트
-
-// app.js를 node가 실행하면 http를 통해 server가 작동한다 / http가 server가 되는 것
-// node는 javaScript RunTime이다
-
-//! 응답을 안 보내면 특정 시간(30초 정도) 후에 브라우저가 자동으로 응답 실패로 처리한다.
-//! res.end를 두번 사용하면 안된다
-
-//? 기본 node http보다 코드를 깔끔하고 구조적으로 짤수 있는 express를 설치한다
-//? $npm install express
 
 /* 자주쓰는 것들
  * app.get : 가져오다
@@ -91,4 +76,4 @@ app.listen(3065, () => {
  * app.head : header만 가져오기(header/body-본문)
  */
 
-// rest API list에 관한 문서는 Swagger를 사용해보는 것도 좋다
+// #npm install morgan: 요청과 응답을 기록하는 모듈

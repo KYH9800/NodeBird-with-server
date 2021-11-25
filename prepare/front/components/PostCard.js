@@ -108,7 +108,7 @@ PostCard.propTypes = {
   post: PropTypes.shape({
     User: PropTypes.object,
     content: PropTypes.string,
-    createAt: PropTypes.object,
+    createAt: PropTypes.string,
     Comments: PropTypes.arrayOf(PropTypes.object),
     Images: PropTypes.arrayOf(PropTypes.object),
   }).isRequired,
