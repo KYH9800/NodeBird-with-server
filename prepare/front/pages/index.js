@@ -6,6 +6,7 @@ import PostForm from '../components/PostForm';
 import PostCard from '../components/PostCard';
 
 import { LOAD_POSTS_REQUEST } from '../reducers/post';
+import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -14,17 +15,16 @@ const Home = () => {
 
   useEffect(() => {
     dispatch({
+      type: LOAD_MY_INFO_REQUEST,
+    });
+    dispatch({
       type: LOAD_POSTS_REQUEST,
     });
   }, []);
 
-  // todo: infinite scroll (참고: virtualized : instagram에 쓰임, 3~4개의 Posts만 그려준다)
-  // infinite scroll 시 렉이 없이 깔끔하게 된다면 최고다
   useEffect(() => {
     // comopnentDidMount()
     function onScroll() {
-      // 얼마나 내렸는지 // 화면에 보이는 길이 // 총 길이
-      // console.log(window.scrollY, document.documentElement.clientHeight, document.documentElement.scrollHeight);
       if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 500) {
         if (hasMorePosts && !loadPostsLoading) {
           dispatch({
