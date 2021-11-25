@@ -47,11 +47,6 @@ app.get('/', (req, res) => {
   res.send('hello express');
 });
 
-app.get('/api', (req, res) => {
-  console.log(req.url, req.method);
-  res.send('hello api');
-});
-
 //* 가져오기
 app.get('/api/posts', (req, res) => {
   res.json([
