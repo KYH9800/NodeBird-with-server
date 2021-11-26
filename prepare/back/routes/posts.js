@@ -9,16 +9,11 @@ router.get('/', async (req, res, next) => {
     const posts = await Post.findAll({
       // where: { id: lastId },
       limit: 10, // 10개만 가져와라
-      order: [
-        ['createdAt', 'DESC'],
-        [Comment, 'createdAt', 'DESC'], // 댓글을 내림차순으로 정렬
-      ],
+      order: [['createdAt', 'DESC']],
       include: [
         {
           model: User,
-          attributes: {
-            attributes: ['id', 'nickname'],
-          },
+          attributes: ['id', 'nickname'],
         },
         {
           model: Image,
@@ -29,8 +24,14 @@ router.get('/', async (req, res, next) => {
             {
               model: User,
               attributes: ['id', 'nickname'],
+              order: [['createdAt', 'DESC']], // 댓글을 내림차순으로 정렬
             },
           ],
+        },
+        {
+          model: User, // 좋아요 누른사람
+          as: 'Likers',
+          attributes: ['id'],
         },
       ],
     }); // findAll: 모든 것

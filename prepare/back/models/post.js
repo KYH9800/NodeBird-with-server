@@ -18,13 +18,12 @@ module.exports = (sequelize, DataTypes) => {
   // sequelize 관계 설정 (1 : N)
   //* 관계를 잘 따져보자, 하나가 여러개를 가질 수 있는지, 여러개가 하나 가질 수 있는지
   Post.associate = (db) => {
-    db.Post.belongsTo(db.User); // 어떤 게시글은 작성자에 속해있다
-    db.Post.belongsToMany(db.Hashtag, { through: 'PostHashtag' }); // 다 : 다 관계
-    db.Post.hasMany(db.Comment); // 한 사람이 여러개의 댓글을 작성 할 수 있다
-    db.Post.hasMany(db.Image);
-    // post에 좋아요를 누른 사람들
-    db.Post.belongsToMany(db.User, { through: 'Like', as: 'Likers' }); // through: 중간 테이블의 이름을 정의
-    db.Post.belongsTo(db.Post, { as: 'RetweetId' }); // 1 : N
-  };
+    db.Post.belongsTo(db.User); // post.addUser, post.getUser, post.setUser
+    db.Post.belongsToMany(db.Hashtag, { through: 'PostHashtag' }); // post.addHashtags
+    db.Post.hasMany(db.Comment); // post.addComments, post.getComments
+    db.Post.hasMany(db.Image); // post.addImages, post.getImages
+    db.Post.belongsToMany(db.User, { through: 'Like', as: 'Likers' }); // post.addLikers, post.removeLikers
+    db.Post.belongsTo(db.Post, { as: 'RetweetId' }); // post.addRetweetId
+  }; // add, get, set, remove
   return Post;
 };

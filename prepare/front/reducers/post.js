@@ -4,6 +4,14 @@ export const initialState = {
   mainPosts: [], // Dummy Data
   imagePaths: [], // 이미지 업로드 할 때 이미지 경로들이 여기에 저장
   hasMorePosts: true, // 가져오려는 시도
+  // like
+  likePostLoading: false,
+  likePostDone: false,
+  likePostError: null,
+  // unlike
+  unlikePostLoading: false,
+  unlikePostDone: false,
+  unlikePostError: null,
   // 게시글을 불러올때(무한 스크롤)
   loadPostsLoading: false,
   loadPostsDone: false,
@@ -21,6 +29,15 @@ export const initialState = {
   addCommentDone: false,
   addCommentError: null,
 };
+
+// LIKE
+export const LIKE_POST_REQUEST = 'LIKE_POST_REQUEST';
+export const LIKE_POST_SUCCESS = 'LIKE_POST_SUCCESS';
+export const LIKE_POST_FAILURE = 'LIKE_POST_FAILURE';
+// UNLIKE
+export const UNLIKE_POST_REQUEST = 'UNLIKE_POST_REQUEST';
+export const UNLIKE_POST_SUCCESS = 'UNLIKE_POST_SUCCESS';
+export const UNLIKE_POST_FAILURE = 'UNLIKE_POST_FAILURE';
 
 // 처음에 화면을 로딩하는 action
 export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST';
@@ -56,6 +73,42 @@ export const addComment = (data) => ({
 const reducer = (state = initialState, action) =>
   produce(state, (draft) => {
     switch (action.type) {
+      //* LIKE
+      case LIKE_POST_REQUEST:
+        console.log('LIKE_POST_REQUEST');
+        draft.likePostLoading = true;
+        draft.likePostDone = false;
+        draft.likePostError = null;
+        break;
+      case LIKE_POST_SUCCESS: {
+        const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
+        post.Likers.push({ id: action.data.UserId }); // 좋아요 누른 사람중에 내가 추가
+        draft.likePostLoading = false;
+        draft.likePostDone = true;
+        break;
+      }
+      case LIKE_POST_FAILURE:
+        draft.likePostLoading = false;
+        draft.likePostError = action.error;
+        break;
+      //* UNLIKE
+      case UNLIKE_POST_REQUEST:
+        console.log('UNLIKE_POST_REQUEST');
+        draft.unlikePostLoading = true;
+        draft.unlikePostDone = false;
+        draft.unlikePostError = null;
+        break;
+      case UNLIKE_POST_SUCCESS: {
+        const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
+        post.Likers = post.Likers.filter((v) => v.id !== action.data.UserId); // 좋아요 누른 사람중에 내가 빠짐(filter)
+        draft.unlikePostLoading = false;
+        draft.unlikePostDone = true;
+        break;
+      }
+      case UNLIKE_POST_FAILURE:
+        draft.unlikePostLoading = false;
+        draft.unlikePostError = action.error;
+        break;
       //* 게시글 불러오기(Infinite Scroll)
       case LOAD_POSTS_REQUEST:
         console.log('LOAD_POSTS_REQUEST');
