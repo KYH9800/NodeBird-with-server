@@ -137,12 +137,92 @@ router.patch('/nickname', isLoggedIn, async (req, res, next) => {
   }
 });
 
+router.patch('/:userId/follow', isLoggedIn, async (req, res, next) => {
+  try {
+    const user = await User.findOne({
+      where: { id: req.params.userId },
+    });
+    if (!user) {
+      res.status(403).send('없는 사람은 팔로우 할 수 없습니다.');
+    }
+    await user.addFollowers(req.user.id);
+    res.status(200).json({ UserId: parseInt(req.params.userId, 10) });
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+}); // PATCH /user/1/follow
+
+router.delete('/:userId/follow', isLoggedIn, async (req, res, next) => {
+  try {
+    const user = await User.findOne({
+      where: { id: req.params.userId },
+    });
+    if (!user) {
+      res.status(403).send('없는 사람은 언팔로우 할 수 없습니다.');
+    }
+    await user.removeFollowers(req.user.id);
+    res.status(200).json({ UserId: parseInt(req.params.userId, 10) });
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+}); // DELETE /user/1/follow
+
+router.get('/followers', isLoggedIn, async (req, res, next) => {
+  try {
+    const user = await User.findOne({
+      where: { id: req.user.id },
+    });
+    if (!user) {
+      res.status(403).send('찾고자 하는 사람이 없습니다.');
+    }
+    const followers = await user.getFollowers({
+      attributes: {
+        exclude: ['password', 'email'],
+      },
+    });
+    res.status(200).json(followers);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+}); // GET /user/followers
+
+router.get('/followings', isLoggedIn, async (req, res, next) => {
+  try {
+    const user = await User.findOne({
+      where: { id: req.user.id },
+    });
+    if (!user) {
+      res.status(403).send('찾고자 하는 사람이 없습니다.');
+    }
+    const followings = await user.getFollowings({
+      attributes: {
+        exclude: ['password', 'email'],
+      },
+    });
+    res.status(200).json(followings);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+}); // GET /user/followings
+
+router.delete('/follower/:userId', isLoggedIn, async (req, res, next) => {
+  try {
+    const user = await User.findOne({
+      where: { id: req.params.userId },
+    });
+    if (!user) {
+      res.status(403).send('차단하려는 사람이 없습니다.');
+    }
+    await user.removeFollowings(req.user.id);
+    res.status(200).json({ UserId: parseInt(req.params.userId, 10) });
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+}); // DELETE /user/follower/2
+
 module.exports = router;
-
-// sequelize 공식문서
-// https://sequelize.org/master/manual/model-querying-finders.html#-code-findone--code-
-
-// 200 성공
-// 300 리다이렉트
-// 400 클라이언트 에러
-// 500 서버 에러
