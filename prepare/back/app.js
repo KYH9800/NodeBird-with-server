@@ -5,7 +5,7 @@ const cors = require('cors'); // $npm install cors
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
-require('dotenv').config();
+require('dotenv').config(); // dotenv
 const morgan = require('morgan');
 
 const postRouter = require('./routes/post');
@@ -15,10 +15,6 @@ const userRouter = require('./routes/user');
 const db = require('./models');
 const passportConfig = require('./passport');
 
-//* promiss, 서버 실행할 때 db/sequelize 연결도 같이 해준다
-// $npx sequelize db:create
-// $npm i -D nodemon >> nodemon app.js 로 서버를 실행
-// package.json - "scripts" { "dev": "nodemon app"}
 db.sequelize
   .sync()
   .then(() => {
@@ -39,13 +35,7 @@ passportConfig(); // passport
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIESCRET)); // dotenv
-app.use(
-  session({
-    saveUninitialized: false,
-    resave: false,
-    secret: process.env.COOKIESCRET,
-  })
-); // dotenv
+app.use(session({ saveUninitialized: false, resave: false, secret: process.env.COOKIESCRET })); // dotenv
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -65,6 +55,11 @@ app.use('/user', userRouter);
 app.listen(3065, () => {
   console.log('서버 실행 중입니다.');
 }); // 사용할 포트
+
+//* promiss, 서버 실행할 때 db/sequelize 연결도 같이 해준다
+// $npx sequelize db:create
+// $npm i -D nodemon >> nodemon app.js 로 서버를 실행
+// package.json - "scripts" { "dev": "nodemon app"}
 
 /* 자주쓰는 것들
  * app.get : 가져오다
