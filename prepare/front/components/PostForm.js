@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Button, Form, Input } from 'antd';
 // components
-import { addPost } from '../reducers/post';
+import { addPost, UPLOAD_IMAGES_REQUEST } from '../reducers/post';
 import useInput from '../hooks/useInput'; // custom hooks
 
 const PostForm = () => {
@@ -28,11 +28,23 @@ const PostForm = () => {
     imageInput.current.click();
   }, [imageInput.current]);
 
+  const onChangeImages = useCallback((e) => {
+    console.log('images', e.target.files);
+    const imageFormData = new FormData();
+    [].forEach.call(e.target.files, (f) => {
+      imageFormData.append('image', f); // key: 'image', value(값): f
+    }); // key: 'image'와 routes/post.js에 router.post('./images', upload.array('image'))가 일치해야 그대로 받을 수가 있다
+    dispatch({
+      type: UPLOAD_IMAGES_REQUEST,
+      data: imageFormData,
+    });
+  }, []);
+
   return (
     <FormStyle encType="multipart/form-data" onFinish={onSubmit}>
       <Input.TextArea value={text} onChange={onChangeText} maxLength={140} placeholder="어떤 신기한 일이 있었나요?" />
       <div>
-        <input type="file" multiple hidden ref={imageInput} />
+        <input type="file" name="image" multiple hidden ref={imageInput} onChange={onChangeImages} />
         <Button onClick={onClickImageUpload}>이미지 업로드</Button>
         <ButtonFloat type="primary" htmlType="submit" loading={addPostLoading}>
           짹짹

@@ -28,8 +28,15 @@ export const initialState = {
   addCommentLoading: false,
   addCommentDone: false,
   addCommentError: null,
+  // 이미지 업로드
+  uploadImagesLoading: false,
+  uploadImagesDone: false,
+  uploadImagesError: null,
 };
-
+// UPLOAD_IMAGES
+export const UPLOAD_IMAGES_REQUEST = 'UPLOAD_IMAGES_REQUEST';
+export const UPLOAD_IMAGES_SUCCESS = 'UPLOAD_IMAGES_SUCCESS';
+export const UPLOAD_IMAGES_FAILURE = 'UPLOAD_IMAGES_FAILURE';
 // LIKE
 export const LIKE_POST_REQUEST = 'LIKE_POST_REQUEST';
 export const LIKE_POST_SUCCESS = 'LIKE_POST_SUCCESS';
@@ -73,6 +80,23 @@ export const addComment = (data) => ({
 const reducer = (state = initialState, action) =>
   produce(state, (draft) => {
     switch (action.type) {
+      //* UPLOAD_IMAGES
+      case UPLOAD_IMAGES_REQUEST:
+        console.log('UPLOAD_IMAGES_REQUEST');
+        draft.uploadImagesLoading = true;
+        draft.uploadImagesDone = false;
+        draft.uploadImagesError = null;
+        break;
+      case UPLOAD_IMAGES_SUCCESS: {
+        draft.imagePaths = action.data;
+        draft.uploadImagesLoading = false;
+        draft.uploadImagesDone = true;
+        break;
+      }
+      case UPLOAD_IMAGES_FAILURE:
+        draft.uploadImagesLoading = false;
+        draft.uploadImagesError = action.error;
+        break;
       //* LIKE
       case LIKE_POST_REQUEST:
         console.log('LIKE_POST_REQUEST');
