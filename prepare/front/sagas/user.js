@@ -20,6 +20,9 @@ import {
   LOAD_MY_INFO_REQUEST,
   LOAD_MY_INFO_SUCCESS,
   LOAD_MY_INFO_FAILURE,
+  CHANGE_NICKNAME_REQUEST,
+  CHANGE_NICKNAME_SUCCESS,
+  CHANGE_NICKNAME_FAILURE,
 } from '../reducers/user';
 
 // LOG_IN
@@ -128,9 +131,9 @@ function loadMyInfoAPI() {
   return axios.get('/user'); // GET(Browser)
 }
 
-function* loadMyInfo(action) {
+function* loadMyInfo() {
   try {
-    const result = yield call(loadMyInfoAPI, action.data);
+    const result = yield call(loadMyInfoAPI);
     console.log(result);
     yield put({
       type: LOAD_MY_INFO_SUCCESS,
@@ -144,13 +147,30 @@ function* loadMyInfo(action) {
   }
 }
 
-// 여기가 event Listener 같은 역할은 한다
+// changeNickname
+function changeNicknameAPI(data) {
+  return axios.patch('/user/nickname', { nickname: data });
+}
+
+function* changeNickname(action) {
+  try {
+    const result = yield call(changeNicknameAPI, action.data);
+    console.log(result);
+    yield put({
+      type: CHANGE_NICKNAME_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    yield put({
+      type: CHANGE_NICKNAME_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
 function* watchLogIn() {
   yield takeLatest(LOG_IN_REQUEST, logIn); // takeLatest는 여러번 눌려도 앞것은 무시하고 마지막 것만 실행해준다
-} // takeLeading은 앞에 것만 한번 실행해준다 (뒤에 것은 무시)
-// yield takeEvery('LOG_IN_REQUEST', logIn); // takeEvery가 while문을 대체 할 수 있다.
-// yield만 쓰면 한번만 동작하고 사라진다 하지만 while로 감싸주면 무한하게 사용 가능하다
-// while (true) { yield take('LOG_IN_REQUEST', logIn); } // while take는 동기적으로 동작한다 또 직관적이지 않다
+}
 function* watchLogOut() {
   yield takeLatest(LOG_OUT_REQUEST, logOut);
 }
@@ -171,6 +191,10 @@ function* watchLoadMyInfo() {
   yield takeLatest(LOAD_MY_INFO_REQUEST, loadMyInfo);
 }
 
+function* watchChangNickname() {
+  yield takeLatest(CHANGE_NICKNAME_REQUEST, changeNickname);
+}
+
 export default function* userSaga() {
   yield all([
     fork(watchLogIn),
@@ -179,5 +203,6 @@ export default function* userSaga() {
     fork(watchFollow),
     fork(watchUnFollow),
     fork(watchLoadMyInfo),
+    fork(watchChangNickname),
   ]);
 }

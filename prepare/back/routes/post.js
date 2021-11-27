@@ -111,9 +111,20 @@ router.delete('/:postId/like', isLoggedIn, async (req, res, next) => {
   }
 }); // DELETE /post/post.id/like
 
-//* 삭제하기
-router.delete('/', (req, res) => {
-  res.json({ id: 1 });
+//* 게시글 삭제하기
+router.delete('/:postId', isLoggedIn, async (req, res, next) => {
+  try {
+    await Post.destroy({
+      where: {
+        id: req.params.postId,
+        UserId: req.user.id, // 이렇게 하면 다른 사람이 못 지움(해당 작성자만 지울수 있음)
+      },
+    }); // destroy: 파괴하다
+    res.status(200).json({ PostId: parseInt(req.params.postId, 10) });
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
 }); // DELETE /post
 
 module.exports = router;
