@@ -119,6 +119,24 @@ router.post('/logout', isLoggedIn, (req, res) => {
   res.send('logout ok');
 });
 
+//* 닉네임 변경하기
+router.patch('/nickname', isLoggedIn, async (req, res, next) => {
+  try {
+    await User.update(
+      {
+        nickname: req.body.nickname, // nickname을 front에서 제공한 nickname으로 변경
+      },
+      {
+        where: { id: req.user.id }, // 남의 것이 아닌 나의 id의(조건)
+      }
+    );
+    res.status(200).json({ nickname: req.body.nickname });
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
+
 module.exports = router;
 
 // sequelize 공식문서
