@@ -59,7 +59,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
 // 이미지 업로드
 const upload = multer({
   storage: multer.diskStorage({
-    destinatio(req, file, done) {
+    destination(req, file, done) {
       done(null, 'uploads');
     },
     filename(req, file, done) {
