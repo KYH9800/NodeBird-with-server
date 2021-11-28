@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const passport = require('passport');
 require('dotenv').config(); // dotenv
 const morgan = require('morgan');
+const path = require('path');
 
 const postRouter = require('./routes/post');
 const postsRouter = require('./routes/posts');
@@ -38,6 +39,7 @@ app.use(cookieParser(process.env.COOKIESCRET)); // dotenv
 app.use(session({ saveUninitialized: false, resave: false, secret: process.env.COOKIESCRET })); // dotenv
 app.use(passport.initialize());
 app.use(passport.session());
+app.use('/', express.static(path.join(__dirname, 'uploads'))); // ('/'): http://localhost:3065/
 
 //* router
 app.get('/', (req, res) => {

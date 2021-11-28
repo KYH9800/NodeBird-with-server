@@ -7,6 +7,7 @@ import { Global, Overlay, Header, CloseBtn, SlickWrapper, ImgWrapper, Indicator 
 //! 이미지를 확대해서 볼 수 있다 ("개발자 코드는 자산이다. 나중에 필요 시 재활용이 가능하다.")
 const ImagesZoom = ({ images, onClose }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const IMAGE_URL = `http://localhost:3065/`;
 
   return (
     <Overlay>
@@ -23,16 +24,18 @@ const ImagesZoom = ({ images, onClose }) => {
             infinite
             arrows={false}
             slidesToShow={1}
-            slidesToScroll={1}>
+            slidesToScroll={1}
+          >
             {images.map((v) => (
               <ImgWrapper key={v.src}>
-                <img src={v.src} alt={v.src} />
+                <img src={`${IMAGE_URL}${v.src}`} alt={v.src} />
               </ImgWrapper>
             ))}
           </Slick>
           <Indicator>
             <div>
-              {currentSlide + 1 + ' '} /{images.length}
+              {currentSlide + 1}
+              {` `}/{images.length}
             </div>
           </Indicator>
         </div>
@@ -41,7 +44,7 @@ const ImagesZoom = ({ images, onClose }) => {
   );
 };
 
-ImagesZoom.PropTypes = {
+ImagesZoom.propTypes = {
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
   onClose: PropTypes.func.isRequired,
 };

@@ -1,7 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs');
+const fs = require('fs'); // 파일 시스템을 조작할 수 있는 모듈
 
 const { Post, Comment, Image, User } = require('../models');
 const { isLoggedIn } = require('./middlewares');
@@ -15,14 +15,38 @@ try {
   fs.mkdirSync('uploads');
 }
 
+// 이미지 업로드: fs, multer npm 라이브러리 사이트 참고
+const upload = multer({
+  storage: multer.diskStorage({
+    destination(req, file, done) {
+      done(null, 'uploads');
+    }, // 파일이 저장될 목적지
+    filename(req, file, done) {
+      const ext = path.extname(file.originalname); // filename: 고윤혁.png > 확장자 추출(.png)
+      const basename = path.basename(file.originalname, ext); // 고윤혁
+      done(null, basename + '-' + new Date().getTime() + ext); // 고윤혁-2021070424239281.png
+    }, // 파일 이름 + 업로드시간 + 확장자 추출
+  }),
+  limits: { fileSize: 20 * 1024 * 1024 }, // 파일크기: 20MB
+}); // 지금은 하드디스크에 저장하지만 AWS 배포 시 storage 옵션만 S3 서비스로 갈아끼울 예정
+
 //* 생성하기 (postman Tools)
 // 게시글 작성
-router.post('/', isLoggedIn, async (req, res, next) => {
+router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {
   try {
     const post = await Post.create({
       content: req.body.content,
       UserId: req.user.id,
     });
+    if (req.body.image) {
+      if (Array.isArray(req.body.image)) {
+        const images = await Promise.all(req.body.image.map((image) => Image.create({ src: image }))); // 이미지를 여러 개 올리면 image: [고윤혁.png, 태연.png]
+        await post.addImages(images);
+      } else {
+        const image = await Image.create({ src: req.body.image }); // 이미지를 하나만 올리면 image: 고윤혁.png
+        await post.addImages(image);
+      }
+    }
     const fullPost = await Post.findOne({
       where: { id: post.id },
       include: [
@@ -56,25 +80,10 @@ router.post('/', isLoggedIn, async (req, res, next) => {
   }
 }); // POST /post
 
-// 이미지 업로드
-const upload = multer({
-  storage: multer.diskStorage({
-    destination(req, file, done) {
-      done(null, 'uploads');
-    },
-    filename(req, file, done) {
-      const ext = path.extname(file.originalname); // filename: 고윤혁.png > 확장자 추출(.png)
-      const basename = path.basename(file.originalname, ext); // 고윤혁
-      done(null, basename + new Date().getTime() + ext); // 고윤혁2021070424239281.png
-    },
-  }),
-  limits: { fileSize: 20 * 1024 * 1024 }, // 파일크기: 20MB
-}); // 지금은 하드디스크에 저장하지만 AWS 배포 시 storage 옵션만 S3 서비스로 갈아끼울 예정
-// upload.array(), upload.single(), upload.none()
 router.post('/images', isLoggedIn, upload.array('image'), (req, res, next) => {
   console.log(req.files); // 업로드가 어떻게 됬는지 정보들이 담겨있음
   res.json(req.files.map((v) => v.filename)); // 어디로 업로드 되었는지에 대한 파일명들을 프론트로 보내줌
-}); // POST /post/images
+}); // POST /post/images, // upload.array(), upload.single(), upload.none()
 
 // 댓글 작성
 router.post('/:postId/comment', isLoggedIn, async (req, res, next) => {

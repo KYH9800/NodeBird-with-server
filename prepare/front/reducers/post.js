@@ -63,12 +63,8 @@ export const REMOVE_POST_FAILURE = 'REMOVE_POST_FAILURE';
 export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST';
 export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS';
 export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE';
-
-// action 객체
-export const addPost = (data) => ({
-  type: ADD_POST_REQUEST,
-  data,
-});
+// REMOVE_IMAGE
+export const REMOVE_IMAGE = 'REMOVE_IMAGE';
 
 export const addComment = (data) => ({
   type: ADD_COMMENT_REQUEST,
@@ -80,6 +76,10 @@ export const addComment = (data) => ({
 const reducer = (state = initialState, action) =>
   produce(state, (draft) => {
     switch (action.type) {
+      //* REMOVE_IMAGE
+      case REMOVE_IMAGE: // 이미지는 서버에서 잘 안지운다(자원이라서), 때문에 case가 한개
+        draft.imagePaths = draft.imagePaths.filter((v, i) => i !== action.data);
+        break;
       //* UPLOAD_IMAGES
       case UPLOAD_IMAGES_REQUEST:
         console.log('UPLOAD_IMAGES_REQUEST');
@@ -162,6 +162,7 @@ const reducer = (state = initialState, action) =>
         draft.mainPosts.unshift(action.data);
         draft.addPostLoading = false;
         draft.addPostDone = true;
+        draft.imagePaths = []; // 사진을 올리면 imagePath 초기화
         break;
       case ADD_POST_FAILURE:
         draft.addPostLoading = false;

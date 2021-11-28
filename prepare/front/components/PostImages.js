@@ -16,11 +16,13 @@ const PostImages = ({ images }) => {
   const onClose = useCallback(() => {
     setShowImagesZoom(false);
   }, []);
+
+  const IMAGE_URL = `http://localhost:3065/`;
   // img role="presentation" // 클릭이 가능하지만 굳이 클릭할 필요는 없다
   if (images.length === 1) {
     return (
       <>
-        <OneImage role="presentation" src={images[0].src} alt={images[0].src} onClick={onZoom} />
+        <OneImage role="presentation" src={`${IMAGE_URL}${images[0].src}`} alt={images[0].src} onClick={onZoom} />
         {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
       </>
     );
@@ -29,8 +31,8 @@ const PostImages = ({ images }) => {
     return (
       <>
         <div>
-          <TwoImage role="presentation" src={images[0].src} alt={images[0].src} onClick={onZoom} />
-          <TwoImage role="presentation" src={images[1].src} alt={images[1].src} onClick={onZoom} />
+          <TwoImage role="presentation" src={`${IMAGE_URL}${images[0].src}`} alt={images[0].src} onClick={onZoom} />
+          <TwoImage role="presentation" src={`${IMAGE_URL}${images[1].src}`} alt={images[1].src} onClick={onZoom} />
         </div>
         {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
       </>
@@ -40,7 +42,7 @@ const PostImages = ({ images }) => {
   return (
     <>
       <div>
-        <ImgRender role="presentation" src={images[0].src} alt={images[0].src} onClick={onZoom} />
+        <ImgRender role="presentation" src={`${IMAGE_URL}${images[0].src}`} alt={images[0].src} onClick={onZoom} />
         <Div role="presentation" onClick={onZoom}>
           <PlusOutlined />
           <br />
