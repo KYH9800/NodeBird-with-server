@@ -3,7 +3,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs'); // 파일 시스템을 조작할 수 있는 모듈
 
-const { Post, Comment, Image, User } = require('../models');
+const { Post, Comment, Image, User, Hashtag } = require('../models');
 const { isLoggedIn } = require('./middlewares');
 
 const router = express.Router();
@@ -34,10 +34,21 @@ const upload = multer({
 // 게시글 작성
 router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {
   try {
+    const hashtags = req.body.content.match(/#[^\s#]+/g); // 해쉬태그를 꺼내온다
     const post = await Post.create({
       content: req.body.content,
       UserId: req.user.id,
     });
+    if (hashtags) {
+      const result = await Promise.all(
+        hashtags.map((tag) =>
+          Hashtag.findOrCreate({
+            where: { name: tag.slice(1).toLowerCase() },
+          })
+        )
+      ); // [노드, true][리액트, true]
+      await post.addHashtags(result.map((v) => v[0])); // 첫 번째 것만 추출해서 findOrCreate({...})
+    }
     if (req.body.image) {
       if (Array.isArray(req.body.image)) {
         const images = await Promise.all(req.body.image.map((image) => Image.create({ src: image }))); // 이미지를 여러 개 올리면 image: [고윤혁.png, 태연.png]
