@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'; // next는 이 구문이 필요없다(써도 상관은 없다)
 import { useDispatch, useSelector } from 'react-redux';
+import { END } from 'redux-saga';
 
 import AppLayout from '../components/AppLayout';
 import PostForm from '../components/PostForm';
@@ -7,6 +8,7 @@ import PostCard from '../components/PostCard';
 
 import { LOAD_POSTS_REQUEST } from '../reducers/post';
 import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
+import wrapper from '../store/configureStore';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -18,15 +20,6 @@ const Home = () => {
       alert(retweetError);
     }
   }, [retweetError]);
-
-  useEffect(() => {
-    dispatch({
-      type: LOAD_MY_INFO_REQUEST,
-    });
-    dispatch({
-      type: LOAD_POSTS_REQUEST,
-    });
-  }, []);
 
   useEffect(() => {
     // comopnentDidMount()
@@ -58,6 +51,18 @@ const Home = () => {
     </AppLayout>
   );
 };
+
+export const getServerSideProps = wrapper.getServerSideProps((store) => async () => {
+  console.log('store', store);
+  store.dispatch({
+    type: LOAD_MY_INFO_REQUEST,
+  });
+  store.dispatch({
+    type: LOAD_POSTS_REQUEST,
+  });
+  store.dispatch(END);
+  await store.sagaTask.toPromise(); // store/configureStore.js > store.sagaTask
+}); // 이 부분이 Home 보다 먼저 실행됨
 
 export default Home;
 // $npm install next / $npm install next@9 [@version]
