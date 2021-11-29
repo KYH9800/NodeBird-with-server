@@ -70,7 +70,7 @@ function* logOut(action) {
   } catch (err) {
     yield put({
       type: LOG_OUT_FAILURE,
-      data: err.response.data, // 실패 결과는 err.response.data에 담겨있음
+      error: err.response.data, // 실패 결과는 err.response.data에 담겨있음
     });
   }
 }

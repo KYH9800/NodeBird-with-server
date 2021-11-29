@@ -23,6 +23,10 @@ db.sequelize
   })
   .catch(console.error);
 
+db.sequelize.sync({
+  alter: true,
+}); // sequelize model sync() 수정하기
+
 app.use(morgan('dev')); // 요청과 응답을 기록하는 모듈
 const corsOptions = {
   origin: 'http://localhost:3060', // 'https://nodebird.com or "true"
