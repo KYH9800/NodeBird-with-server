@@ -31,7 +31,7 @@ import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from '../reducers/user';
 
 //* LOAD_POSTS
 function loadPostsAPI(lastId) {
-  return axios.get(`/posts?lastId=${lastId || 0}`);
+  return axios.get(`/posts?lastId=${lastId || 0}`); // 10 불러오고 없으면 0
 }
 
 function* loadPosts(action) {
