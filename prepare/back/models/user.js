@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
         // column(열, 세로)
         type: DataTypes.STRING(30), // 조건: 이메일 글자 수 30글자 이내
         allowNull: false, // 필수여부: false-필수, true-필수 X
-        unique: true, // 고유한 값
+        unique: false, // 고유한 값: true
       },
       nickname: {
         type: DataTypes.STRING(30), //? STRING, TEXT, BOOLEAN, INTEGER, FLOAT, DATETIME..

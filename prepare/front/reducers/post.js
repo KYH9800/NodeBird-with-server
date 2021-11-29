@@ -32,6 +32,10 @@ export const initialState = {
   uploadImagesLoading: false,
   uploadImagesDone: false,
   uploadImagesError: null,
+  // Retweet
+  retweetLoading: false,
+  retweetDone: false,
+  retweetError: null,
 };
 // UPLOAD_IMAGES
 export const UPLOAD_IMAGES_REQUEST = 'UPLOAD_IMAGES_REQUEST';
@@ -65,6 +69,10 @@ export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS';
 export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE';
 // REMOVE_IMAGE
 export const REMOVE_IMAGE = 'REMOVE_IMAGE';
+// RETWEET
+export const RETWEET_REQUEST = 'RETWEET_REQUEST';
+export const RETWEET_SUCCESS = 'RETWEET_SUCCESS';
+export const RETWEET_FAILURE = 'RETWEET_FAILURE';
 
 export const addComment = (data) => ({
   type: ADD_COMMENT_REQUEST,
@@ -76,6 +84,23 @@ export const addComment = (data) => ({
 const reducer = (state = initialState, action) =>
   produce(state, (draft) => {
     switch (action.type) {
+      //* RETWEET
+      case RETWEET_REQUEST:
+        console.log('RETWEET_REQUEST');
+        draft.retweetLoading = true;
+        draft.retweetDone = false;
+        draft.retweetError = null;
+        break;
+      case RETWEET_SUCCESS: {
+        draft.retweetLoading = false;
+        draft.retweetDone = true;
+        draft.mainPosts.unshift(action.data);
+        break;
+      }
+      case RETWEET_FAILURE:
+        draft.retweetLoading = false;
+        draft.retweetError = action.error;
+        break;
       //* REMOVE_IMAGE
       case REMOVE_IMAGE: // 이미지는 서버에서 잘 안지운다(자원이라서), 때문에 case가 한개
         draft.imagePaths = draft.imagePaths.filter((v, i) => i !== action.data);
