@@ -8,6 +8,7 @@ const router = express.Router();
 
 // 현재 CSR인 상태 >> 이후 CCR로 서버사이드 렌더링(Next.js)
 router.get('/', async (req, res, next) => {
+  console.log(req.headers); // headers 안에 cookie가 들어있다
   try {
     if (req.user) {
       const user = await User.findOne({

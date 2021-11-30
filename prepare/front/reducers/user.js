@@ -10,6 +10,9 @@ export const initialState = {
   loadFollowingsLoading: false, //* user(Followings) 정보 가져오기 시도중
   loadFollowingsDone: false,
   loadFollowingsError: null,
+  loadUserLoading: false, //* 상대방 정보 가져오기 시도중
+  loadUserDone: false,
+  loadUserError: null,
   loadMyInfoLoading: false, //* user(MyInfo) 정보 가져오기 시도중
   loadMyInfoDone: false,
   loadMyInfoError: null,
@@ -32,8 +35,7 @@ export const initialState = {
   changeNicknameDone: false,
   changeNicknameError: null,
   me: null,
-  signUpData: {},
-  loginData: {},
+  userInfo: null,
 };
 // REMOVE_FOLLOWERS
 export const REMOVE_FOLLOWERS_REQUEST = 'REMOVE_FOLLOWERS_REQUEST';
@@ -47,7 +49,11 @@ export const LOAD_FOLLOWERS_FAILURE = 'LOAD_FOLLOWERS_FAILURE';
 export const LOAD_FOLLOWINGS_REQUEST = 'LOAD_FOLLOWINGS_REQUEST';
 export const LOAD_FOLLOWINGS_SUCCESS = 'LOAD_FOLLOWINGS_SUCCESS';
 export const LOAD_FOLLOWINGS_FAILURE = 'LOAD_FOLLOWINGS_FAILURE';
-// 로그인 유지
+// 상대방 정보 가져오기 위함
+export const LOAD_USER_REQUEST = 'LOAD_USER_REQUEST';
+export const LOAD_USER_SUCCESS = 'LOAD_USER_SUCCESS';
+export const LOAD_USER_FAILURE = 'LOAD_USER_FAILURE';
+// 로그인 정보 가져오기
 export const LOAD_MY_INFO_REQUEST = 'LOAD_MY_INFO_REQUEST';
 export const LOAD_MY_INFO_SUCCESS = 'LOAD_MY_INFO_SUCCESS';
 export const LOAD_MY_INFO_FAILURE = 'LOAD_MY_INFO_FAILURE';
@@ -137,7 +143,7 @@ const reducer = (state = initialState, action) =>
         draft.loadFollowingsLoading = false;
         draft.loadFollowingsError = action.error;
         break;
-      //* user 정보 가져오기 시도중
+      //* 나의 정보 가져오기 시도중
       case LOAD_MY_INFO_REQUEST:
         draft.loadMyInfoLoading = true;
         draft.loadMyInfoDone = false;
@@ -151,6 +157,21 @@ const reducer = (state = initialState, action) =>
       case LOAD_MY_INFO_FAILURE:
         draft.loadMyInfoLoading = false;
         draft.loadMyInfoError = action.error;
+        break;
+      //* 나의 정보 가져오기 시도중
+      case LOAD_USER_REQUEST:
+        draft.loadUserLoading = true;
+        draft.loadUserDone = false;
+        draft.loadUserError = null;
+        break;
+      case LOAD_USER_SUCCESS:
+        draft.loadUserLoading = false;
+        draft.userInfo = action.data;
+        draft.loadUserDone = true;
+        break;
+      case LOAD_USER_FAILURE:
+        draft.loadUserLoading = false;
+        draft.loadUserError = action.error;
         break;
       //* 팔로우 && 언팔로우
       case FOLLOW_REQUEST: // 팔로우

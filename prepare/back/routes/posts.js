@@ -53,7 +53,7 @@ router.get('/', async (req, res, next) => {
         },
       ],
     }); // findAll: 모든 것
-    console.log('posts', posts);
+    // console.log('posts', posts);
     res.status(200).json(posts);
   } catch (err) {
     console.error(err);
