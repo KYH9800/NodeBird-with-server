@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'; // next는 이 구문이 필요없다(써도 상관은 없다)
 import { useDispatch, useSelector } from 'react-redux';
 import { END } from 'redux-saga';
+import axios from 'axios';
 
 import AppLayout from '../components/AppLayout';
 import PostForm from '../components/PostForm';
@@ -9,7 +10,6 @@ import PostCard from '../components/PostCard';
 import { LOAD_POSTS_REQUEST } from '../reducers/post';
 import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 import wrapper from '../store/configureStore';
-import axios from 'axios';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -52,14 +52,13 @@ const Home = () => {
     </AppLayout>
   );
 };
-
+// try SSR with share cookie
 export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req }) => {
   const cookie = req ? req.headers.cookie : ''; // req가 있다면 cookie에 요청에 담겨진 cookie를 할당한다.
   axios.defaults.headers.Cookie = ''; // 요청이 들어올 때마다 초기화 시켜주는 것이다. 여기는 클라이언트 서버에서 실행되므로 이전 요청이 남아있을 수 있기 때문이다
   if (req && cookie) {
     axios.defaults.headers.Cookie = cookie; // 서버일때랑 cookie를 써서 요청을 보낼 때만 headers에 cookie를 넣어준다
   }
-  console.log('store', store);
   store.dispatch({
     type: LOAD_MY_INFO_REQUEST,
   });
@@ -74,5 +73,3 @@ export default Home;
 
 // $npm install next / $npm install next@9 [@version]
 // $npm install react react-dom
-
-//! getServerSideProps: cookie 공유 보안관련 아래는 중요한 부분, 나의 cookie가 다른 user와 공유가 되지 않게 해야한다. (AWS는 서버가 하나)
