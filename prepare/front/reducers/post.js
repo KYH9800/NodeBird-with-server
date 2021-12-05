@@ -2,6 +2,7 @@ import produce from 'immer'; // $npm install immer
 // mainPosts: [ {...}, {...}, {...}, ] // Dummy Data
 export const initialState = {
   mainPosts: [], // Dummy Data
+  singlePost: null, // 게시글 하나만 불러올때
   imagePaths: [], // 이미지 업로드 할 때 이미지 경로들이 여기에 저장
   hasMorePosts: true, // 가져오려는 시도
   // like
@@ -12,6 +13,10 @@ export const initialState = {
   unlikePostLoading: false,
   unlikePostDone: false,
   unlikePostError: null,
+  // 게시글 불러오기(SSR-ServerSideProps)
+  loadPostLoading: false,
+  loadPostDone: false,
+  loadPostError: null,
   // 게시글을 불러올때(무한 스크롤)
   loadPostsLoading: false,
   loadPostsDone: false,
@@ -49,7 +54,10 @@ export const LIKE_POST_FAILURE = 'LIKE_POST_FAILURE';
 export const UNLIKE_POST_REQUEST = 'UNLIKE_POST_REQUEST';
 export const UNLIKE_POST_SUCCESS = 'UNLIKE_POST_SUCCESS';
 export const UNLIKE_POST_FAILURE = 'UNLIKE_POST_FAILURE';
-
+// 게시글 하나만 불러올때
+export const LOAD_POST_REQUEST = 'LOAD_POST_REQUEST';
+export const LOAD_POST_SUCCESS = 'LOAD_POST_SUCCESS';
+export const LOAD_POST_FAILURE = 'LOAD_POST_FAILURE';
 // 처음에 화면을 로딩하는 action
 export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST';
 export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS';
@@ -157,6 +165,22 @@ const reducer = (state = initialState, action) =>
       case UNLIKE_POST_FAILURE:
         draft.unlikePostLoading = false;
         draft.unlikePostError = action.error;
+        break;
+      //* 게시글(한개) 불러오기
+      case LOAD_POST_REQUEST:
+        console.log('LOAD_POST_REQUEST');
+        draft.loadPostLoading = true;
+        draft.loadPostDone = false;
+        draft.loadPostError = null;
+        break;
+      case LOAD_POST_SUCCESS:
+        draft.loadPostLoading = false;
+        draft.loadPostDone = true;
+        draft.singlePost = action.data;
+        break;
+      case LOAD_POST_FAILURE:
+        draft.loadPostLoading = false;
+        draft.loadPostError = action.error;
         break;
       //* 게시글 불러오기(Infinite Scroll)
       case LOAD_POSTS_REQUEST:
