@@ -1,12 +1,15 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
-const { User, Post } = require('../models');
+const { Op } = require('sequelize');
+
+const { User, Post, Image, Comment } = require('../models');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 
 const router = express.Router();
 
 // 현재 CSR인 상태 >> 이후 CCR로 서버사이드 렌더링(Next.js)
+// GET /user
 router.get('/', async (req, res, next) => {
   console.log(req.headers); // headers 안에 cookie가 들어있다
   try {
@@ -44,8 +47,9 @@ router.get('/', async (req, res, next) => {
     console.error(err);
     next(err);
   }
-}); // GET /user
+});
 
+// GET /user/1
 router.get('/:userId', async (req, res, next) => {
   try {
     const fullUserWithoutPassword = await User.findOne({
@@ -83,9 +87,110 @@ router.get('/:userId', async (req, res, next) => {
     console.error(err);
     next(err);
   }
-}); // GET /user/1
+});
+
+// GET /user/followers
+router.get('/followers', isLoggedIn, async (req, res, next) => {
+  try {
+    const user = await User.findOne({
+      where: { id: req.user.id },
+    });
+    if (!user) {
+      res.status(403).send('찾고자 하는 사람이 없습니다.');
+    }
+    const followers = await user.getFollowers({
+      attributes: {
+        exclude: ['password', 'email'],
+      },
+    });
+    res.status(200).json(followers);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
+
+// GET /user/followings
+router.get('/followings', isLoggedIn, async (req, res, next) => {
+  try {
+    const user = await User.findOne({
+      where: { id: req.user.id },
+    });
+    if (!user) {
+      res.status(403).send('찾고자 하는 사람이 없습니다.');
+    }
+    const followings = await user.getFollowings({
+      attributes: {
+        exclude: ['password', 'email'],
+      },
+    });
+    res.status(200).json(followings);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
+
+// GET /user/1/posts
+router.get('/:userId/posts', async (req, res, next) => {
+  try {
+    const where = { UserId: req.params.userId };
+    // page-nation
+    if (parseInt(req.query.lastId, 10)) {
+      where.id = { [Op.lt]: parseInt(req.query.lastId, 10) }; // Op: Operator
+    } // 초기 로딩이 아닐 때
+    const posts = await Post.findAll({
+      where, // where: { id: lastId },
+      limit: 10, // 10개만 가져와라
+      order: [['createdAt', 'DESC']],
+      include: [
+        {
+          model: User,
+          attributes: ['id', 'nickname'],
+        },
+        {
+          model: Image,
+        },
+        {
+          model: Comment,
+          include: [
+            {
+              model: User,
+              attributes: ['id', 'nickname'],
+              order: [['createdAt', 'DESC']], // 댓글을 내림차순으로 정렬
+            },
+          ],
+        },
+        {
+          model: User, // 좋아요 누른사람
+          as: 'Likers',
+          attributes: ['id'],
+        },
+        {
+          model: Post,
+          as: 'Retweet',
+          include: [
+            {
+              model: User,
+              attributes: ['id', 'nickname'],
+            },
+            {
+              model: Image,
+            },
+          ],
+        },
+      ],
+    }); // findAll: 모든 것
+    // console.log('posts', posts);
+    res.status(200).json(posts);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
 
 // err: 서버에러, user: 성공객체, info: 정보 // middleware 확장
+// POST /user/login
 router.post('/login', isNotLoggedIn, (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if (err) {
@@ -125,6 +230,7 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
 }); // 로그인 전략 실행
 
 /* async - await: 비동기 프로그래밍, POST /user/ */
+// POST /user
 router.post('/', isNotLoggedIn, async (req, res, next) => {
   try {
     // 가입 전에 중복확인, 입력한 계정이 존재하는지 찾아본다
@@ -153,13 +259,15 @@ router.post('/', isNotLoggedIn, async (req, res, next) => {
   }
 });
 
+// POST /user/logout
 router.post('/logout', isLoggedIn, (req, res) => {
   req.logout();
   req.session.destroy();
   res.send('logout ok');
 });
 
-//* 닉네임 변경하기
+// 닉네임 변경하기
+// PATCH /user/nickname
 router.patch('/nickname', isLoggedIn, async (req, res, next) => {
   try {
     await User.update(
@@ -177,6 +285,7 @@ router.patch('/nickname', isLoggedIn, async (req, res, next) => {
   }
 });
 
+// PATCH /user/1/follow
 router.patch('/:userId/follow', isLoggedIn, async (req, res, next) => {
   try {
     const user = await User.findOne({
@@ -191,8 +300,9 @@ router.patch('/:userId/follow', isLoggedIn, async (req, res, next) => {
     console.error(err);
     next(err);
   }
-}); // PATCH /user/1/follow
+});
 
+// DELETE /user/1/follow
 router.delete('/:userId/follow', isLoggedIn, async (req, res, next) => {
   try {
     const user = await User.findOne({
@@ -207,48 +317,9 @@ router.delete('/:userId/follow', isLoggedIn, async (req, res, next) => {
     console.error(err);
     next(err);
   }
-}); // DELETE /user/1/follow
+});
 
-router.get('/followers', isLoggedIn, async (req, res, next) => {
-  try {
-    const user = await User.findOne({
-      where: { id: req.user.id },
-    });
-    if (!user) {
-      res.status(403).send('찾고자 하는 사람이 없습니다.');
-    }
-    const followers = await user.getFollowers({
-      attributes: {
-        exclude: ['password', 'email'],
-      },
-    });
-    res.status(200).json(followers);
-  } catch (err) {
-    console.error(err);
-    next(err);
-  }
-}); // GET /user/followers
-
-router.get('/followings', isLoggedIn, async (req, res, next) => {
-  try {
-    const user = await User.findOne({
-      where: { id: req.user.id },
-    });
-    if (!user) {
-      res.status(403).send('찾고자 하는 사람이 없습니다.');
-    }
-    const followings = await user.getFollowings({
-      attributes: {
-        exclude: ['password', 'email'],
-      },
-    });
-    res.status(200).json(followings);
-  } catch (err) {
-    console.error(err);
-    next(err);
-  }
-}); // GET /user/followings
-
+// DELETE /user/follower/2
 router.delete('/follower/:userId', isLoggedIn, async (req, res, next) => {
   try {
     const user = await User.findOne({
@@ -263,6 +334,6 @@ router.delete('/follower/:userId', isLoggedIn, async (req, res, next) => {
     console.error(err);
     next(err);
   }
-}); // DELETE /user/follower/2
+});
 
 module.exports = router;
