@@ -20,7 +20,7 @@ router.get('/:hashtag', async (req, res, next) => {
         {
           model: Hashtag,
           where: {
-            name: req.params.hashtag,
+            name: decodeURIComponent(req.params.hashtag),
           },
         },
         {

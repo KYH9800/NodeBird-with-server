@@ -51,6 +51,7 @@ function* loadUserPosts(action) {
       data: result.data,
     });
   } catch (err) {
+    console.error(err);
     yield put({
       type: LOAD_USER_POSTS_FAILURE,
       error: err.response.data,
@@ -60,17 +61,19 @@ function* loadUserPosts(action) {
 
 //* LOAD_HASHTAG_POSTS
 function loadHashtagPostsAPI(data, lastId) {
-  return axios.get(`/hashtag/${data}?lastId=${lastId || 0}`); // 10 불러오고 없으면 0
+  return axios.get(`/hashtag/${encodeURIComponent(data)}?lastId=${lastId || 0}`); // 10 불러오고 없으면 0
 }
 
 function* loadHashtagPosts(action) {
   try {
+    console.log('loadHashtagPosts');
     const result = yield call(loadHashtagPostsAPI, action.data, action.lastId);
     yield put({
       type: LOAD_HASHTAG_POSTS_SUCCESS,
       data: result.data,
     });
   } catch (err) {
+    console.error(err);
     yield put({
       type: LOAD_HASHTAG_POSTS_FAILURE,
       error: err.response.data,
@@ -91,6 +94,7 @@ function* loadPosts(action) {
       data: result.data,
     });
   } catch (err) {
+    console.error(err);
     yield put({
       type: LOAD_POSTS_FAILURE,
       error: err.response.data,
@@ -135,6 +139,7 @@ function* addPost(action) {
       data: result.data.id,
     });
   } catch (err) {
+    console.error(err);
     yield put({
       type: ADD_POST_FAILURE,
       error: err.response.data,
