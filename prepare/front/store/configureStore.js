@@ -7,20 +7,10 @@ import createSagaMiddleware from 'redux-saga';
 import reducer from '../reducers';
 import rootSaga from '../sagas';
 
-// github 참조
-// middleware는 화살표를 항상 3개 갖으면 된다 (3단 고차함수)
-const loggerMiddleware =
-  ({ dispatch, getState }) =>
-  (next) =>
-  (action) => {
-    console.log('loggerMiddleware(redux-thunk): ', action);
-    return next(action);
-  };
-
 // configureStore 여기에서는 일반 redux와 비슷
 const configureStore = () => {
   const sagaMiddleware = createSagaMiddleware(); // redux-saga
-  const middlewares = [sagaMiddleware, loggerMiddleware]; // 추후 saga || thunk 를 넣기 위한 배열 생성
+  const middlewares = [sagaMiddleware]; // 추후 saga || thunk 를 넣기 위한 배열 생성
   // 배포용일떄 ? devTool 연결 X : devTool 연결 O
   const enhancer =
     process.env.NODE_ENV === 'production'
