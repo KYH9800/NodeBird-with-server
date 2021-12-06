@@ -60,10 +60,10 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async ({
     axios.defaults.headers.Cookie = cookie; // 서버일때랑 cookie를 써서 요청을 보낼 때만 headers에 cookie를 넣어준다
   }
   store.dispatch({
-    type: LOAD_MY_INFO_REQUEST,
+    type: LOAD_POSTS_REQUEST, // post
   });
   store.dispatch({
-    type: LOAD_POSTS_REQUEST,
+    type: LOAD_MY_INFO_REQUEST, // user
   });
   store.dispatch(END);
   await store.sagaTask.toPromise(); // store/configureStore.js > store.sagaTask

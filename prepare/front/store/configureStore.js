@@ -7,6 +7,14 @@ import createSagaMiddleware from 'redux-saga';
 import reducer from '../reducers';
 import rootSaga from '../sagas';
 
+const loggerMiddleware =
+  ({ dispatch, getState }) =>
+  (next) =>
+  (action) => {
+    console.log('loggerMiddleware(redux-thunk): ', action);
+    return next(action);
+  };
+
 // configureStore 여기에서는 일반 redux와 비슷
 const configureStore = () => {
   const sagaMiddleware = createSagaMiddleware(); // redux-saga
