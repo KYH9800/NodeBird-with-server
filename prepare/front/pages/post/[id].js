@@ -18,6 +18,10 @@ const Post = () => {
   const { id } = router.query;
   const { singlePost } = useSelector((state) => state.post);
 
+  // if (router.isFallback) {
+  //   return <div>로딩중...</div>;
+  // } // fallback: true in getStaticPaths function
+
   return (
     <AppLayout>
       <Head>
@@ -38,7 +42,15 @@ const Post = () => {
     </AppLayout>
   );
 };
-
+/*
+export async function getStaticPaths() {
+  const result = await axios.get('');
+  return {
+    paths: [{ params: { id: '1' } }, { params: { id: '2' } }, { params: { id: '3' } }],
+    fallback: true, // true: 로딩중.. 이 후 SSR, false: 다른 페이지를 불러 올 때 에러가 안뜬다
+  };
+}
+*/
 export const getServerSideProps = wrapper.getServerSideProps((store) => async ({ req, params }) => {
   const cookie = req ? req.headers.cookie : '';
   axios.defaults.headers.Cookie = '';
