@@ -67,4 +67,5 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async ({
   store.dispatch(END);
   await store.sagaTask.toPromise();
 });
+
 export default Post;

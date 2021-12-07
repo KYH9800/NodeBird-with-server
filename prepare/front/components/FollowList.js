@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { UNFOLLOW_REQUEST, REMOVE_FOLLOWERS_REQUEST } from '../reducers/user';
 
 // <List /> antd 공식문서에 사용법 나와 있음(참고하기)
-const FollowList = ({ header, data }) => {
+const FollowList = ({ header, data, onClickMore, loading }) => {
   const dispatch = useDispatch();
   const onCancle = (id) => () => {
     if (header === '팔로잉') {
@@ -29,7 +29,9 @@ const FollowList = ({ header, data }) => {
       header={<div>{header}</div>}
       loadMore={
         <DivStyle>
-          <Button>더 보기</Button>
+          <Button onClick={onClickMore} loading={loading}>
+            더 보기
+          </Button>
         </DivStyle>
       }
       bordered
@@ -46,8 +48,10 @@ const FollowList = ({ header, data }) => {
 };
 
 FollowList.propTypes = {
-  header: PropTypes.string.isRequired,
   data: PropTypes.array.isRequired,
+  header: PropTypes.string.isRequired,
+  onClickMore: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 export default FollowList;
