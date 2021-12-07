@@ -1,29 +1,33 @@
-import React, { useEffect } from 'react'; // next는 이 구문이 필요없다(써도 상관은 없다)
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState, useCallback } from 'react'; // next는 이 구문이 필요없다(써도 상관은 없다)
+import { useSelector } from 'react-redux';
 import Router from 'next/router';
 import Head from 'next/head';
-import axios from 'axios';
 import { END } from 'redux-saga';
-// Form을 만들 때 ReactForm 라이브러리를 사용하는 것이 좋다
+import axios from 'axios';
+import useSWR from 'swr';
+
 import AppLayout from '../components/AppLayout';
 import NicknameEditForm from '../components/NicknameEditForm';
 import FollowList from '../components/FollowList';
-import { LOAD_FOLLOWERS_REQUEST, LOAD_FOLLOWINGS_REQUEST, LOAD_MY_INFO_REQUEST } from '../reducers/user';
+import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 
 import wrapper from '../store/configureStore';
 
-const Profile = () => {
-  const dispatch = useDispatch();
-  const { me } = useSelector((state) => state.user);
+const fetcher = (url) => axios.get(url, { withCredentials: true }).then((result) => result.data); // swr
 
-  useEffect(() => {
-    dispatch({
-      type: LOAD_FOLLOWERS_REQUEST,
-    });
-    dispatch({
-      type: LOAD_FOLLOWINGS_REQUEST,
-    });
-  }, []);
+const Profile = () => {
+  const { me } = useSelector((state) => state.user);
+  const [followersLimit, setFollowersLimit] = useState(3);
+  const [followingsLimit, setFollowingsLimit] = useState(3);
+  // data: success, falure, 둘 다 없으면 loading... / routes에서 params & wildeCard 위에 있어야 한다 (작동 흐름: 위에서 아래로, 왼쪽 > 오른쪽)
+  const { data: followersData, error: followerError } = useSWR(
+    `http://localhost:3065/user/followers?limit=${followersLimit}`,
+    fetcher,
+  ); // fetcher를 다른 걸로 바꾸면 graghQL도 쓸 수 있다
+  const { data: followingsData, error: followingError } = useSWR(
+    `http://localhost:3065/user/followings?limit=${followingsLimit}`,
+    fetcher,
+  );
 
   // me data 안에 id 값이 없으면 홈으로, 있으면 리스트 보이기
   useEffect(() => {
@@ -31,9 +35,25 @@ const Profile = () => {
       Router.push('/');
     }
   }, [me && me.id]);
+
+  // 추가로 1개만 있는데 3개를 더 불러오는 것은 data 낭비, 해결방법: useEffect에 followersData의 id로 비교해서 기존 state에 concat하면 된다.
+  const loadMoreFollowers = useCallback(() => {
+    setFollowersLimit((prev) => prev + 3);
+  }, []);
+
+  const loadMoreFollowings = useCallback(() => {
+    setFollowingsLimit((prev) => prev + 3);
+  }, []);
+
   if (!me) {
-    return null;
+    return '내 정보 로딩중...';
   }
+
+  if (followerError || followingError) {
+    console.error(followerError || followingError);
+    return '팔로잉/팔로워 로딩 중 에러가 발생합니다.';
+  }
+
   return (
     <>
       <Head>
@@ -41,8 +61,18 @@ const Profile = () => {
       </Head>
       <AppLayout>
         <NicknameEditForm />
-        <FollowList header="팔로잉" data={me.Followings} />
-        <FollowList header="팔로워" data={me.Followers} />
+        <FollowList
+          header="팔로잉"
+          data={followingsData}
+          onClickMore={loadMoreFollowings}
+          loading={!followingsData && !followingError}
+        />
+        <FollowList
+          header="팔로워"
+          data={followersData}
+          onClickMore={loadMoreFollowers}
+          loading={!followersData && !followerError}
+        />
       </AppLayout>
     </>
   );

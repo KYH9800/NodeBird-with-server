@@ -1,3 +1,4 @@
+// router 작동흐름: 위에서 아래로, 왼쪽에서 오른쪽으로
 const express = require('express');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
@@ -49,6 +50,51 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+//* useSWR: routes에서 params & wildeCard 위에 있어야 한다 (작동 흐름: 위에서 아래로, 왼쪽 > 오른쪽)
+// GET /user/followers
+router.get('/followers', isLoggedIn, async (req, res, next) => {
+  try {
+    const user = await User.findOne({
+      where: { id: req.user.id },
+    });
+    if (!user) {
+      res.status(403).send('찾고자 하는 사람이 없습니다.');
+    }
+    const followers = await user.getFollowers({
+      limit: parseInt(req.query.limit), // 3개만 가져와라
+      attributes: {
+        exclude: ['password', 'email'],
+      },
+    });
+    res.status(200).json(followers);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
+// GET /user/followings
+router.get('/followings', isLoggedIn, async (req, res, next) => {
+  try {
+    const user = await User.findOne({
+      where: { id: req.user.id },
+    });
+    if (!user) {
+      res.status(403).send('찾고자 하는 사람이 없습니다.');
+    }
+    const followings = await user.getFollowings({
+      limit: parseInt(req.query.limit), // 3개만 가져와라
+      attributes: {
+        exclude: ['password', 'email'],
+      },
+    });
+    res.status(200).json(followings);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
+
+//! useSWR 사용 시: '/:userId'가 followers, followings를 인식한다. 때문에 아래의 error: 404 Not Found 발생, params & wildeCard 위에 router가 위치해야 함
 // GET /user/1
 router.get('/:userId', async (req, res, next) => {
   try {
@@ -83,48 +129,6 @@ router.get('/:userId', async (req, res, next) => {
     } else {
       res.status(404).send('존재하지 않는 사용자입니다.');
     }
-  } catch (err) {
-    console.error(err);
-    next(err);
-  }
-});
-
-// GET /user/followers
-router.get('/followers', isLoggedIn, async (req, res, next) => {
-  try {
-    const user = await User.findOne({
-      where: { id: req.user.id },
-    });
-    if (!user) {
-      res.status(403).send('찾고자 하는 사람이 없습니다.');
-    }
-    const followers = await user.getFollowers({
-      attributes: {
-        exclude: ['password', 'email'],
-      },
-    });
-    res.status(200).json(followers);
-  } catch (err) {
-    console.error(err);
-    next(err);
-  }
-});
-
-// GET /user/followings
-router.get('/followings', isLoggedIn, async (req, res, next) => {
-  try {
-    const user = await User.findOne({
-      where: { id: req.user.id },
-    });
-    if (!user) {
-      res.status(403).send('찾고자 하는 사람이 없습니다.');
-    }
-    const followings = await user.getFollowings({
-      attributes: {
-        exclude: ['password', 'email'],
-      },
-    });
-    res.status(200).json(followings);
   } catch (err) {
     console.error(err);
     next(err);
