@@ -7,8 +7,6 @@ import createSagaMiddleware from 'redux-saga';
 import reducer from '../reducers';
 import rootSaga from '../sagas';
 
-// github 참조
-// middleware는 화살표를 항상 3개 갖으면 된다 (3단 고차함수)
 const loggerMiddleware =
   ({ dispatch, getState }) =>
   (next) =>
