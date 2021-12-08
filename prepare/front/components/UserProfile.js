@@ -17,24 +17,32 @@ const UserProfile = () => {
     <Card
       actions={[
         <div key="twit">
-          짹짹
-          <br />
-          {me.Posts.length}
+          <Link href={`/user/${me.id}`}>
+            <a>
+              짹짹
+              <br />
+              {me.Posts.length}
+            </a>
+          </Link>
         </div>,
-        <Link href="profile">
-          <div key="following">
-            팔로잉
-            <br />
-            {me.Followings.length}
-          </div>
-        </Link>,
-        <Link href="profile">
-          <div key="follower">
-            팔로워
-            <br />
-            {me.Followers.length}
-          </div>
-        </Link>,
+        <div key="following">
+          <Link href="profile">
+            <a>
+              팔로잉
+              <br />
+              {me.Followings.length}
+            </a>
+          </Link>
+        </div>,
+        <div key="follower">
+          <Link href="profile">
+            <a>
+              팔로워
+              <br />
+              {me.Followers.length}
+            </a>
+          </Link>
+        </div>,
       ]}
     >
       <Card.Meta avatar={<Avatar>{me.nickname[0]}</Avatar>} title={me.nickname} />
