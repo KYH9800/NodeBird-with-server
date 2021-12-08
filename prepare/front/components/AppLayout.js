@@ -1,7 +1,8 @@
 //! AppLayout.js는 일부분이 공통인 것들
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useSelector } from 'react-redux'; // npm install react-redux
 import PropTypes from 'prop-types'; //! $npm install prop-types
+import Router from 'next/router';
 import Link from 'next/link';
 import { Input, Menu, Row, Col } from 'antd';
 import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
@@ -9,12 +10,19 @@ import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 import styled, { createGlobalStyle } from 'styled-components';
 import UserProfile from './UserProfile';
 import LoginForm from './LoginForm';
+import useInput from '../hooks/useInput';
 
 // prepare/front/pages/에서 index.js, profile.js, signup.js에 공통으로 사용할 layout
 const AppLayout = ({ children }) => {
+  const [searchInput, onChangeSearchInput] = useInput('');
   const { me } = useSelector((state) => state.user);
   // return 분분이 Virtual DOM
   // 반응형 그리드 xs: 모바일, sm: 태블릿, md: 작은 데스크탑
+
+  const onSearch = useCallback(() => {
+    Router.push(`/hashtag/${searchInput}`);
+  }, [searchInput]);
+
   return (
     <div>
       <Global />
@@ -30,7 +38,7 @@ const AppLayout = ({ children }) => {
           </Link>
         </Menu.Item>
         <Menu.Item key="SearchInput">
-          <SearchInput enterButton />
+          <SearchInput enterButton value={searchInput} onChange={onChangeSearchInput} onSearch={onSearch} />
         </Menu.Item>
         <Menu.Item key="signup">
           <Link href="/signup">
