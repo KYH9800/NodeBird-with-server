@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "next -p 3060",
-    "build": "next build",
+    "build": "cross-env ANALYZE=true NODE_ENV=production next build",
     "start": "next start"
   },
   "author": "kyh",
@@ -17,6 +17,7 @@
     "antd": "^4.16.13",
     "axios": "^0.22.0",
     "babel-plugin-styled-components": "^1.13.2",
+    "cross-env": "^7.0.3",
     "faker": "^5.5.3",
     "immer": "^9.0.6",
     "moment": "^2.29.1",
