@@ -40,11 +40,6 @@ const AppLayout = ({ children }) => {
         <Menu.Item key="SearchInput">
           <SearchInput enterButton value={searchInput} onChange={onChangeSearchInput} onSearch={onSearch} />
         </Menu.Item>
-        <Menu.Item key="signup">
-          <Link href="/signup">
-            <a>회원가입</a>
-          </Link>
-        </Menu.Item>
       </PositionFixed>
       <RowSection gutter={10}>
         <Col xs={24} sm={6} md={6}>

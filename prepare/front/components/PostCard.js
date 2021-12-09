@@ -2,6 +2,8 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
+import moment from 'moment'; // 날짜 라이브러리(npmtrans에서 추이 파악/dayjs...)
+import 'moment/locale/ko'; // 한글로 변환
 // css
 import { Avatar, Button, Card, Popover, List, Comment } from 'antd';
 import { RetweetOutlined, HeartOutlined, HeartTwoTone, MessageOutlined, EllipsisOutlined } from '@ant-design/icons';
@@ -103,6 +105,7 @@ const PostCard = ({ post }) => {
       >
         {post.RetweetId && post.Retweet ? (
           <Card cover={post.Retweet.Images[0] && <PostImages images={post.Retweet.Images} />}>
+            <MomentDiv>{moment(post.createAt).format('YYYY년.MMMM.DD일 작성됨')}</MomentDiv>
             <Card.Meta
               avatar={
                 <Link href={`/user/${post.Retweet.User.id}`}>
@@ -116,17 +119,20 @@ const PostCard = ({ post }) => {
             />
           </Card>
         ) : (
-          <Card.Meta
-            avatar={
-              <Link href={`/user/${post.User.id}`}>
-                <a>
-                  <Avatar>{post.User.nickname[0]}</Avatar>
-                </a>
-              </Link>
-            }
-            title={post.User.nickname}
-            description={<PostCardContent postData={post.content} />}
-          />
+          <>
+            <MomentDiv>{moment(post.createAt).format('YYYY년.MMMM.DD일 작성됨')}</MomentDiv>
+            <Card.Meta
+              avatar={
+                <Link href={`/user/${post.User.id}`}>
+                  <a>
+                    <Avatar>{post.User.nickname[0]}</Avatar>
+                  </a>
+                </Link>
+              }
+              title={post.User.nickname}
+              description={<PostCardContent postData={post.content} />}
+            />
+          </>
         )}
       </Card>
       {commentFormOpened && (
@@ -178,4 +184,7 @@ export default PostCard;
 
 const MainDiv = styled.div`
   margin-bottom: 20px;
+`;
+const MomentDiv = styled.div`
+  float: right;
 `;
