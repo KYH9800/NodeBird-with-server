@@ -1,4 +1,4 @@
-import produce from 'immer';
+import produce from '../util/produce';
 
 export const initialState = {
   removeFollowersLoading: false, //* Remove Followers 시도중

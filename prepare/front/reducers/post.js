@@ -1,4 +1,4 @@
-import produce from 'immer'; // $npm install immer
+import produce from '../util/produce'; // $npm install immer
 // mainPosts: [ {...}, {...}, {...}, ] // Dummy Data
 export const initialState = {
   mainPosts: [], // Dummy Data
