@@ -1,0 +1,18 @@
+# Dependency directories
+node_modules/
+
+# dotenv environment variables file
+.env
+
+# Serverless directories
+.serverless
+/front/build/
+react-nodebird.pem
+
+react-nodebird-aws.pem
+node_modules
+.next
+.env
+
+# misc
+.DS_Store
