@@ -8,6 +8,8 @@ const passport = require('passport');
 require('dotenv').config(); // dotenv
 const morgan = require('morgan');
 const path = require('path');
+const hpp = require('hpp'); // morgan에서 production 할 때는 hpp와 helmet은 필수
+const helmet = require('helmet');
 
 const postRouter = require('./routes/post');
 const postsRouter = require('./routes/posts');
@@ -28,9 +30,16 @@ db.sequelize.sync({
   alter: true,
 }); // sequelize model sync() 수정하기
 
-app.use(morgan('dev')); // 요청과 응답을 기록하는 모듈
+if (process.env.NODE_ENV === 'production') {
+  app.use(morgan('combined')); // 요청과 응답을 기록하는 모듈 (production)
+  app.use(hpp()); // 보안에 도움되는 패키지
+  app.use(helmet()); // 보안에 도움되는 패키지
+} else {
+  app.use(morgan('dev')); // 요청과 응답을 기록하는 모듈 (development)
+}
+
 const corsOptions = {
-  origin: 'http://localhost:3060', // 'https://nodebird.com or "true"
+  origin: ['http://localhost:3060', 'nodebird.com'], // 'https://nodebird.com or "true"
   credentials: true, // default: false
 };
 app.use(cors(corsOptions));
