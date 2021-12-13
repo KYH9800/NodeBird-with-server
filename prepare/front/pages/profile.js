@@ -12,6 +12,7 @@ import FollowList from '../components/FollowList';
 import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 
 import wrapper from '../store/configureStore';
+import { backURL } from '../config/config';
 
 const fetcher = (url) => axios.get(url, { withCredentials: true }).then((result) => result.data); // swr
 
@@ -21,11 +22,11 @@ const Profile = () => {
   const [followingsLimit, setFollowingsLimit] = useState(3);
   // data: success, falure, 둘 다 없으면 loading... / routes에서 params & wildeCard 위에 있어야 한다 (작동 흐름: 위에서 아래로, 왼쪽 > 오른쪽)
   const { data: followersData, error: followerError } = useSWR(
-    `http://localhost:3065/user/followers?limit=${followersLimit}`,
+    `${backURL}/user/followers?limit=${followersLimit}`,
     fetcher,
   ); // fetcher를 다른 걸로 바꾸면 graghQL도 쓸 수 있다
   const { data: followingsData, error: followingError } = useSWR(
-    `http://localhost:3065/user/followings?limit=${followingsLimit}`,
+    `${backURL}/user/followings?limit=${followingsLimit}`,
     fetcher,
   );
 
