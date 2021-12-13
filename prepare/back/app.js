@@ -69,7 +69,7 @@ app.use('/hashtag', hashtagRouter);
 // app.use((err, req, res, next) => {...}); error처리 미들웨어
 
 // http://localhost:3065/
-app.listen(3065, () => {
+app.listen(80, () => {
   console.log('서버 실행 중입니다.');
 }); // 사용할 포트
 
