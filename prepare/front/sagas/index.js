@@ -3,8 +3,9 @@ import axios from 'axios';
 // import components
 import userSaga from './user';
 import postSaga from './post';
+import { backURL } from '../config/config';
 
-axios.defaults.baseURL = 'http://localhost:3065'; // baseURL
+axios.defaults.baseURL = backURL; // 'http://localhost:3065';
 axios.defaults.withCredentials = true;
 
 // '*' : generator - using yield
