@@ -4,7 +4,7 @@ import axios from 'axios';
 import userSaga from './user';
 import postSaga from './post';
 
-axios.defaults.baseURL = 'http://localhost:3065'; // baseURL
+axios.defaults.baseURL = 'http://3.36.71.147'; // 'http://localhost:3065'
 axios.defaults.withCredentials = true;
 
 // '*' : generator - using yield
