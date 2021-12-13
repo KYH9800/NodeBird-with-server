@@ -10,6 +10,7 @@ node_modules/
 react-nodebird.pem
 
 react-nodebird-aws.pem
+react-nodebird-aws.cer
 node_modules
 .next
 .env
