@@ -39,7 +39,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const corsOptions = {
-  origin: ['http://localhost:3060', 'nodebird.com', 'http://13.209.50.241'], // 'https://nodebird.com or "true"
+  origin: ['http://localhost:3060', 'http://nodebird.com'], // 'https://nodebird.com or "true"
   credentials: true, // default: false
 };
 app.use(cors(corsOptions));
@@ -50,7 +50,18 @@ passportConfig(); // passport
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIESCRET)); // dotenv
-app.use(session({ saveUninitialized: false, resave: false, secret: process.env.COOKIESCRET })); // dotenv
+app.use(
+  session({
+    saveUninitialized: false,
+    resave: false,
+    secret: process.env.COOKIESCRET,
+    cookie: {
+      httpOnly: true,
+      secure: false,
+      domain: process.env.NODE_ENV === 'production' && '.nodebird.com',
+    },
+  })
+); // dotenv
 app.use(passport.initialize());
 app.use(passport.session());
 app.use('/', express.static(path.join(__dirname, 'uploads'))); // ('/'): http://localhost:3065/
