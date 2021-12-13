@@ -30,7 +30,9 @@
     "implicit-arrow-linebreak": "off",
     "no-unused-vars": "off",
     "no-param-reassign": "off", // immer 사용 시 draft 때문에 "off"
-    "react/prop-types": "off"
+    "react/prop-types": "off",
+    "no-alert": "off",
+    "react/jsx-props-no-spreading": "off" // {...props} problem in front/pages/_document.js
   }
 }
 /* npm install --save-dev */

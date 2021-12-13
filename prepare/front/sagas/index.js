@@ -1,7 +1,11 @@
 import { all, fork } from 'redux-saga/effects'; // saga의 effects
+import axios from 'axios';
 // import components
 import userSaga from './user';
 import postSaga from './post';
+
+axios.defaults.baseURL = 'http://localhost:3065'; // baseURL
+axios.defaults.withCredentials = true;
 
 // '*' : generator - using yield
 // rootSaga 하나 만들어 놓고 만들고싶은 비동기 액션을 하나씩 넣어준다

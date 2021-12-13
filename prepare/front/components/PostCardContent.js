@@ -11,6 +11,7 @@ const PostCardContent = ({ postData }) => (
         // 정규식(태그달린 단어)과 매치가 된다면?
         return (
           // 태그 이후 단어들을 링크로 설정
+          // eslint-disable-next-line react/no-array-index-key
           <Link href={`/hashtag/${v.slice(1)}`} key={i}>
             <a>{v}</a>
           </Link>

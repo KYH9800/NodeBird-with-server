@@ -13,15 +13,20 @@ const FollowButton = ({ post }) => {
     if (isFollowing) {
       dispatch({
         type: UNFOLLOW_REQUEST,
-        data: post.User.id,
+        data: post.User.id, // mainPosts.User.id (/pages/index.js, mainPosts: /reducers/post.js)
       });
     } else {
       dispatch({
         type: FOLLOW_REQUEST,
-        data: post.User.id,
+        data: post.User.id, // mainPosts.User.id (/pages/index.js, mainPosts: /reducers/post.js)
       });
     }
   }, [isFollowing]);
+  // 나의 게시물이면 null 값
+  if (post.User.id === me.id) {
+    return null;
+  }
+
   return (
     <>
       <Button loading={followLoading || unFollowLoading} onClick={onClickButton}>
