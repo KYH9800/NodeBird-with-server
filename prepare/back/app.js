@@ -39,7 +39,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const corsOptions = {
-  origin: ['http://localhost:3060', 'http://ko7452.nodebird.com'], // 'https://nodebird.com or "true"
+  origin: ['http://localhost:3060', 'http://koyunhyeoknodebird.com'], // 'https://nodebird.com or "true"
   credentials: true, // default: false
 };
 app.use(cors(corsOptions));
