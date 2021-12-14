@@ -39,7 +39,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const corsOptions = {
-  origin: ['http://localhost:3060', 'http://kyhnodebird.site/'], // 'https://nodebird.com or "true"
+  origin: ['http://localhost:3060', 'http://coding-factory.site'], // 'https://nodebird.com or "true"
   credentials: true, // default: false
 };
 app.use(cors(corsOptions));
@@ -58,7 +58,7 @@ app.use(
     cookie: {
       httpOnly: true,
       secure: false,
-      domain: process.env.NODE_ENV === 'production' && '.nodebird.com',
+      domain: process.env.NODE_ENV === 'production' && '.coding-factory.site',
     },
   })
 ); // dotenv
