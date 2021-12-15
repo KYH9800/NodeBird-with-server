@@ -17,6 +17,7 @@ try {
   fs.mkdirSync('uploads');
 }
 
+console.log(process.env.S3_ACCESS_KEY_ID, process.env.S3_ACCESS_KEY_ID);
 AWS.config.update({
   accessKeyId: process.env.S3_ACCESS_KEY_ID, // .env로 보안 설정
   scretAccessKey: process.env.S3_SECRET_ACCESS_KEY, // .env로 보안 설정
