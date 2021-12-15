@@ -34,15 +34,21 @@ if (process.env.NODE_ENV === 'production') {
   app.use(morgan('combined')); // 요청과 응답을 기록하는 모듈 (production)
   app.use(hpp()); // 보안에 도움되는 패키지
   app.use(helmet()); // 보안에 도움되는 패키지
+  app.use(
+    cors({
+      origin: 'http://coding-factory.site',
+      credentials: true, // default: false
+    })
+  );
 } else {
   app.use(morgan('dev')); // 요청과 응답을 기록하는 모듈 (development)
+  app.use(
+    cors({
+      origin: 'http://localhost:3060',
+      credentials: true, // default: false
+    })
+  );
 }
-
-const corsOptions = {
-  origin: ['http://localhost:3060', 'http://coding-factory.site'], // 'https://nodebird.com or "true"
-  credentials: true, // default: false
-};
-app.use(cors(corsOptions));
 
 passportConfig(); // passport
 
