@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import { PlusOutlined } from '@ant-design/icons';
 // components
 import ImagesZoom from './ImagesZoom';
-import { backURL } from '../config/config';
 
 const PostImages = ({ images }) => {
   const [showImagesZoom, setShowImagesZoom] = useState(false);
@@ -22,7 +21,7 @@ const PostImages = ({ images }) => {
   if (images.length === 1) {
     return (
       <>
-        <OneImage role="presentation" src={`${backURL}${images[0].src}`} alt={images[0].src} onClick={onZoom} />
+        <OneImage role="presentation" src={`${images[0].src}`} alt={images[0].src} onClick={onZoom} />
         {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
       </>
     );
@@ -31,8 +30,8 @@ const PostImages = ({ images }) => {
     return (
       <>
         <div>
-          <TwoImage role="presentation" src={`${backURL}${images[0].src}`} alt={images[0].src} onClick={onZoom} />
-          <TwoImage role="presentation" src={`${backURL}${images[1].src}`} alt={images[1].src} onClick={onZoom} />
+          <TwoImage role="presentation" src={`${images[0].src}`} alt={images[0].src} onClick={onZoom} />
+          <TwoImage role="presentation" src={`${images[1].src}`} alt={images[1].src} onClick={onZoom} />
         </div>
         {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
       </>
@@ -42,7 +41,7 @@ const PostImages = ({ images }) => {
   return (
     <>
       <div>
-        <ImgRender role="presentation" src={`${backURL}${images[0].src}`} alt={images[0].src} onClick={onZoom} />
+        <ImgRender role="presentation" src={`${images[0].src}`} alt={images[0].src} onClick={onZoom} />
         <Div role="presentation" onClick={onZoom}>
           <PlusOutlined />
           <br />
