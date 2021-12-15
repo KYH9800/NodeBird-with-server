@@ -1,7 +1,9 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs'); // 파일 시스템을 조작할 수 있는 모듈
+const fs = require('fs');
+const multerS3 = require('multer-s3'); // multer를 통해 S3로 올릴때 사용
+const AWS = require('aws-sdk'); // S3 접근권한 얻을 때 사용
 
 const { Post, Comment, Image, User, Hashtag } = require('../models');
 const { isLoggedIn } = require('./middlewares');
@@ -15,17 +17,20 @@ try {
   fs.mkdirSync('uploads');
 }
 
+AWS.config.update({
+  accessKeyId: process.env.S3_ACCESS_KEY_ID, // .env로 보안 설정
+  scretAccessKey: process.env.S3_SECRET_ACCESS_KEY, // .env로 보안 설정
+  region: 'ap-northeast-2', // aws에 설정한 나의 위치: 아시아 태평양(서울)
+});
+
 // 이미지 업로드: fs, multer npm 라이브러리 사이트 참고
 const upload = multer({
-  storage: multer.diskStorage({
-    destination(req, file, done) {
-      done(null, 'uploads');
-    }, // 파일이 저장될 목적지
-    filename(req, file, done) {
-      const ext = path.extname(file.originalname); // filename: 고윤혁.png > 확장자 추출(.png)
-      const basename = path.basename(file.originalname, ext); // 고윤혁
-      done(null, basename + '-' + new Date().getTime() + ext); // 고윤혁-2021070424239281.png
-    }, // 파일 이름 + 업로드시간 + 확장자 추출
+  storage: multerS3({
+    s3: new AWS.S3(), // 이렇게까지 하면 S3의 권한을 얻음, key랑 accessKey로
+    bucket: 'coding-factory-s3',
+    key(req, file, cd) {
+      cd(null, `original/${Date.now()}_${path.basename(file.originalname)}`);
+    },
   }),
   limits: { fileSize: 20 * 1024 * 1024 }, // 파일크기: 20MB
 }); // 지금은 하드디스크에 저장하지만 AWS 배포 시 storage 옵션만 S3 서비스로 갈아끼울 예정
@@ -93,7 +98,7 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {
 
 router.post('/images', isLoggedIn, upload.array('image'), (req, res, next) => {
   console.log(req.files); // 업로드가 어떻게 됬는지 정보들이 담겨있음
-  res.json(req.files.map((v) => v.filename)); // 어디로 업로드 되었는지에 대한 파일명들을 프론트로 보내줌
+  res.json(req.files.map((v) => v.location)); // location 자체에 주소가 담겨있음, PostFrom에 image src에 그대로 전달(backURL 필요 X)
 }); // POST /post/images, // upload.array(), upload.single(), upload.none()
 
 // 게시글 하나만 불러오기(공유하기)
