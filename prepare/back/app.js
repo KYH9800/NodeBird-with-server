@@ -36,7 +36,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use(helmet()); // 보안에 도움되는 패키지
   app.use(
     cors({
-      origin: 'https://coding-factory.site',
+      origin: 'http://coding-factory.site',
       credentials: true, // default: false
     })
   );
