@@ -44,7 +44,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use(morgan('dev')); // 요청과 응답을 기록하는 모듈 (development)
   app.use(
     cors({
-      origin: 'http://localhost:3060',
+      origin: 'true',
       credentials: true, // default: false
     })
   );
