@@ -99,7 +99,8 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {
 
 router.post('/images', isLoggedIn, upload.array('image'), (req, res, next) => {
   console.log(req.files); // 업로드가 어떻게 됬는지 정보들이 담겨있음
-  res.json(req.files.map((v) => v.location)); // location 자체에 주소가 담겨있음, PostFrom에 image src에 그대로 전달(backURL 필요 X)
+  res.json(req.files.map((v) => v.location.replace(/\/original\//, '/thumb/'))); // original에서 thumb 이미지를 가져옴
+  // location 자체에 주소가 담겨있음, PostFrom에 image src에 그대로 전달(backURL 필요 X)
 }); // POST /post/images, // upload.array(), upload.single(), upload.none()
 
 // 게시글 하나만 불러오기(공유하기)
