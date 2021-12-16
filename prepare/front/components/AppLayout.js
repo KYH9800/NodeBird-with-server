@@ -67,8 +67,6 @@ export default AppLayout;
 
 // styled-components
 const LoggedFixed = styled.div`
-  position: fixed;
-  width: 25%;
   top: 10;
   z-index: 999;
 `;
