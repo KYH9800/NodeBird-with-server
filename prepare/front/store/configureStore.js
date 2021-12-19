@@ -20,12 +20,11 @@ const loggerMiddleware =
 // configureStore 여기에서는 일반 redux와 비슷
 const configureStore = () => {
   const sagaMiddleware = createSagaMiddleware(); // redux-saga
-  const middlewares = [sagaMiddleware, loggerMiddleware]; // 추후 saga || thunk 를 넣기 위한 배열 생성
-  // 배포용일떄 ? devTool 연결 X : devTool 연결 O
-  const enhancer =
+  // const middlewares = [sagaMiddleware, loggerMiddleware]; // 추후 saga || thunk 를 넣기 위한 배열 생성
+  const enhancer = // 배포용일떄 ? devTool 연결 X : devTool 연결 O
     process.env.NODE_ENV === 'production'
-      ? compose(applyMiddleware(...middlewares))
-      : composeWithDevTools(applyMiddleware(...middlewares));
+      ? compose(applyMiddleware(sagaMiddleware))
+      : composeWithDevTools(applyMiddleware(sagaMiddleware, loggerMiddleware));
   const store = createStore(reducer, enhancer); // state와 reducer를 포함하는게 store
   store.sagaTask = sagaMiddleware.run(rootSaga);
   return store;
