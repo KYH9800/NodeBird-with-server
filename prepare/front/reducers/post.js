@@ -101,7 +101,6 @@ const reducer = (state = initialState, action) =>
     switch (action.type) {
       //* RETWEET
       case RETWEET_REQUEST:
-        console.log('RETWEET_REQUEST');
         draft.retweetLoading = true;
         draft.retweetDone = false;
         draft.retweetError = null;
@@ -122,7 +121,6 @@ const reducer = (state = initialState, action) =>
         break;
       //* UPLOAD_IMAGES
       case UPLOAD_IMAGES_REQUEST:
-        console.log('UPLOAD_IMAGES_REQUEST');
         draft.uploadImagesLoading = true;
         draft.uploadImagesDone = false;
         draft.uploadImagesError = null;
@@ -139,7 +137,6 @@ const reducer = (state = initialState, action) =>
         break;
       //* LIKE
       case LIKE_POST_REQUEST:
-        console.log('LIKE_POST_REQUEST');
         draft.likePostLoading = true;
         draft.likePostDone = false;
         draft.likePostError = null;
@@ -157,7 +154,6 @@ const reducer = (state = initialState, action) =>
         break;
       //* UNLIKE
       case UNLIKE_POST_REQUEST:
-        console.log('UNLIKE_POST_REQUEST');
         draft.unlikePostLoading = true;
         draft.unlikePostDone = false;
         draft.unlikePostError = null;
@@ -175,7 +171,6 @@ const reducer = (state = initialState, action) =>
         break;
       //* 게시글(한개) 불러오기
       case LOAD_POST_REQUEST:
-        console.log('LOAD_POST_REQUEST');
         draft.loadPostLoading = true;
         draft.loadPostDone = false;
         draft.loadPostError = null;
@@ -195,7 +190,6 @@ const reducer = (state = initialState, action) =>
       case LOAD_USER_POSTS_REQUEST:
       case LOAD_HASHTAG_POSTS_REQUEST:
       case LOAD_POSTS_REQUEST:
-        console.log('LOAD_POSTS_REQUEST');
         draft.loadPostsLoading = true;
         draft.loadPostsDone = false;
         draft.loadPostsError = null;
@@ -216,13 +210,11 @@ const reducer = (state = initialState, action) =>
         break;
       //* 게시물 추가
       case ADD_POST_REQUEST:
-        console.log('ADD_POST_REQUEST');
         draft.addPostLoading = true;
         draft.addPostDone = false;
         draft.addPostError = null;
         break;
       case ADD_POST_SUCCESS:
-        console.log('ADD_POST_SUCCESS');
         draft.mainPosts.unshift(action.data);
         draft.addPostLoading = false;
         draft.addPostDone = true;
