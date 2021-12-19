@@ -21,7 +21,6 @@ const LoginForm = () => {
 
   // onFinish은 자동으로 e.preventDefault() 가 적용되어 있다
   const onSubmitForm = useCallback(() => {
-    console.log(email, password);
     dispatch(loginRequestAction({ email, password }));
   }, [email, password]); // 해당 값이 변할 때 함수를 기억
 

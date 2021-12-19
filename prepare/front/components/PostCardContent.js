@@ -12,7 +12,7 @@ const PostCardContent = ({ postData }) => (
         return (
           // 태그 이후 단어들을 링크로 설정
           // eslint-disable-next-line react/no-array-index-key
-          <Link href={`/hashtag/${v.slice(1)}`} key={i}>
+          <Link href={`/hashtag/${v.slice(1)}`} key={i} prefetch={false}>
             <a>{v}</a>
           </Link>
         );
