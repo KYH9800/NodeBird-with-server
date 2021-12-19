@@ -31,6 +31,7 @@ db.sequelize.sync({
 }); // sequelize model sync() 수정하기
 
 if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1); // secure true / proxy setting / vim nginx.conf / add proxy_set_header X-Forwarded-Proto $scheme; in nginx server
   app.use(morgan('combined')); // 요청과 응답을 기록하는 모듈 (production)
   app.use(hpp()); // 보안에 도움되는 패키지
   app.use(helmet()); // 보안에 도움되는 패키지
@@ -56,13 +57,12 @@ passportConfig(); // passport
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIESCRET)); // dotenv
-app.set('trust proxy');
 app.use(
   session({
     saveUninitialized: false,
     resave: false,
     secret: process.env.COOKIESCRET,
-    proxy: true,
+    proxy: true, // nginx express session cookie
     cookie: {
       httpOnly: true,
       secure: true,
