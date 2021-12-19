@@ -86,7 +86,7 @@ const PostCard = ({ post }) => {
               <Button.Group>
                 {id && post.User.id === id ? (
                   <>
-                    <Button>수정</Button>
+                    {!post.RetweetId && <Button>수정</Button>}
                     <Button type="danger" onClick={onRemovePost} loading={removePostLoading}>
                       삭제
                     </Button>
