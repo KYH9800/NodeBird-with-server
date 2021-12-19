@@ -63,7 +63,7 @@ app.use(
     secret: process.env.COOKIESCRET,
     cookie: {
       httpOnly: true,
-      secure: false,
+      secure: true,
       domain: process.env.NODE_ENV === 'production' && '.coding-factory.site',
     },
   })
