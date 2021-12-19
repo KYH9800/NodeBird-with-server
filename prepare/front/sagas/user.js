@@ -44,7 +44,6 @@ function logInAPI(data) {
 // 요청이 실패할 경우를 대비 try, catch를 사용
 function* logIn(action) {
   try {
-    console.log('saga login');
     const result = yield call(logInAPI, action.data); //! call은 동기 함수로 결과가 와야 실행된다
     yield put({
       type: LOG_IN_SUCCESS,
