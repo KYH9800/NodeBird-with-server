@@ -2,6 +2,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Avatar, Card } from 'antd';
+import styled from 'styled-components';
 import { END } from 'redux-saga';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -54,7 +55,7 @@ const User = () => {
         </Head>
       )}
       {userInfo ? (
-        <Card
+        <CardSheet
           actions={[
             <div key="twit">
               짹짹
@@ -74,7 +75,7 @@ const User = () => {
           ]}
         >
           <Card.Meta avatar={<Avatar>{userInfo.nickname[0]}</Avatar>} title={userInfo.nickname} />
-        </Card>
+        </CardSheet>
       ) : null}
       {mainPosts.map((post) => (
         <PostCard key={post.id} post={post} />
@@ -107,3 +108,7 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async ({
 });
 
 export default User;
+
+const CardSheet = styled(Card)`
+  margin-bottom: 20px;
+`;
