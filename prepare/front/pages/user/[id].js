@@ -19,7 +19,7 @@ const User = () => {
   const router = useRouter();
   const { id } = router.query;
   const { mainPosts, hasMorePosts, loadPostsLoading } = useSelector((state) => state.post);
-  const { userInfo } = useSelector((state) => state.user);
+  const { userInfo, me } = useSelector((state) => state.user);
 
   useEffect(() => {
     const onScroll = () => {
@@ -54,7 +54,7 @@ const User = () => {
           <meta property="og:url" content={`https://coding-factory.site/user/${id}`} />
         </Head>
       )}
-      {userInfo ? (
+      {userInfo && userInfo.id !== me?.id ? (
         <CardSheet
           actions={[
             <div key="twit">
