@@ -295,6 +295,27 @@ router.patch('/:postId/like', isLoggedIn, async (req, res, next) => {
   }
 }); // PATCH /post/post.id/like
 
+// 게시글 수정
+router.patch('/:postId', isLoggedIn, async (req, res, next) => {
+  try {
+    await Post.update(
+      {
+        content: req.body.content,
+      },
+      {
+        where: {
+          id: req.params.postId,
+          UserId: req.user.id, // 이렇게 하면 다른 사람이 못 지움(해당 작성자만 지울수 있음)
+        },
+      }
+    ); // destroy: 파괴하다
+    res.status(200).json({ PostId: parseInt(req.params.postId, 10), content: req.body.content });
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+}); // PATCH /post
+
 router.delete('/:postId/like', isLoggedIn, async (req, res, next) => {
   try {
     const post = await Post.findOne({

@@ -25,6 +25,10 @@ export const initialState = {
   addPostLoading: false, // 게시글 추가가 완료가 됬을 때 true로 변한다
   addPostDone: false,
   addPostError: null,
+  // 게시글 수정
+  updatePostLoading: false,
+  updatePostDone: false,
+  updatePostError: null,
   // 게시글을 삭제
   removePostLoading: false,
   removePostDone: false,
@@ -74,6 +78,10 @@ export const LOAD_HASHTAG_POSTS_FAILURE = 'LOAD_HASHTAG_POSTS_FAILURE';
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
 export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
 export const ADD_POST_FAILURE = 'ADD_POST_FAILURE';
+// 게시글 수정
+export const UPDATE_POST_REQUEST = 'UPDATE_POST_REQUEST';
+export const UPDATE_POST_SUCCESS = 'UPDATE_POST_SUCCESS';
+export const UPDATE_POST_FAILURE = 'UPDATE_POST_FAILURE';
 // 게시물 삭제
 export const REMOVE_POST_REQUEST = 'REMOVE_POST_REQUEST';
 export const REMOVE_POST_SUCCESS = 'REMOVE_POST_SUCCESS';
@@ -223,6 +231,21 @@ const reducer = (state = initialState, action) =>
       case ADD_POST_FAILURE:
         draft.addPostLoading = false;
         draft.addPostError = action.error;
+        break;
+      //* 게시글 수정
+      case UPDATE_POST_REQUEST:
+        draft.updatePostLoading = true;
+        draft.updatePostDone = false;
+        draft.updatePostError = null;
+        break;
+      case UPDATE_POST_SUCCESS:
+        draft.updatePostLoading = false;
+        draft.updatePostDone = true;
+        draft.mainPosts.find((v) => v.id === action.data.PostId).content = action.data.content;
+        break;
+      case UPDATE_POST_FAILURE:
+        draft.updatePostLoading = false;
+        draft.updatePostError = action.error;
         break;
       //* 게시물 삭제
       case REMOVE_POST_REQUEST:
