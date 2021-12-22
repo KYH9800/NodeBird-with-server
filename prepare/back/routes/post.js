@@ -297,6 +297,7 @@ router.patch('/:postId/like', isLoggedIn, async (req, res, next) => {
 
 // 게시글 수정
 router.patch('/:postId', isLoggedIn, async (req, res, next) => {
+  const hashtags = req.body.content.match(/#[^\s#]+/g); // 해쉬태그를 꺼내온다
   try {
     await Post.update(
       {
@@ -308,7 +309,18 @@ router.patch('/:postId', isLoggedIn, async (req, res, next) => {
           UserId: req.user.id, // 이렇게 하면 다른 사람이 못 지움(해당 작성자만 지울수 있음)
         },
       }
-    ); // destroy: 파괴하다
+    );
+    const post = await Post.findOne({ where: { id: req.params.postId } });
+    if (hashtags) {
+      const result = await Promise.all(
+        hashtags.map((tag) =>
+          Hashtag.findOrCreate({
+            where: { name: tag.slice(1).toLowerCase() },
+          })
+        )
+      ); // [노드, true][리액트, true]
+      await post.setHashtags(result.map((v) => v[0])); // setHashtags
+    }
     res.status(200).json({ PostId: parseInt(req.params.postId, 10), content: req.body.content });
   } catch (err) {
     console.error(err);
