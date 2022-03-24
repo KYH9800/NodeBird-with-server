@@ -45,7 +45,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use(morgan('dev')); // 요청과 응답을 기록하는 모듈 (development)
   app.use(
     cors({
-      origin: 'true',
+      origin: true,
       credentials: true, // default: false
     })
   );
@@ -57,19 +57,29 @@ passportConfig(); // passport
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIESCRET)); // dotenv
-app.use(
-  session({
-    saveUninitialized: false,
-    resave: false,
-    secret: process.env.COOKIESCRET,
-    proxy: true, // nginx express session cookie
-    cookie: {
-      httpOnly: true,
-      secure: true,
-      domain: process.env.NODE_ENV === 'production' && '.coding-factory.site',
-    },
-  })
-); // dotenv
+if (process.env.NODE_ENV === 'production') {
+  app.use(
+    session({
+      saveUninitialized: false,
+      resave: false,
+      secret: process.env.COOKIESCRET,
+      proxy: true, // nginx express session cookie
+      cookie: {
+        httpOnly: true,
+        secure: true,
+        domain: process.env.NODE_ENV === 'production' && '.coding-factory.site',
+      },
+    })
+  ); // dotenv
+} else {
+  app.use(
+    session({
+      saveUninitialized: false,
+      resave: false,
+      secret: process.env.COOKIESCRET,
+    })
+  );
+}
 app.use(passport.initialize());
 app.use(passport.session());
 app.use('/', express.static(path.join(__dirname, 'uploads'))); // ('/'): http://localhost:3065/

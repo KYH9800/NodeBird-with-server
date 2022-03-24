@@ -17,24 +17,38 @@ try {
   fs.mkdirSync('uploads');
 }
 
-console.log(process.env.S3_ACCESS_KEY_ID, process.env.S3_ACCESS_KEY_ID);
-AWS.config.update({
-  accessKeyId: process.env.S3_ACCESS_KEY_ID, // .env로 보안 설정
-  scretAccessKey: process.env.S3_SECRET_ACCESS_KEY, // .env로 보안 설정
-  region: 'ap-northeast-2', // aws에 설정한 나의 위치: 아시아 태평양(서울)
-});
-
-// 이미지 업로드: fs, multer npm 라이브러리 사이트 참고
+// console.log(process.env.S3_ACCESS_KEY_ID, process.env.S3_ACCESS_KEY_ID);
+// AWS.config.update({
+//   accessKeyId: process.env.S3_ACCESS_KEY_ID, // .env로 보안 설정
+//   scretAccessKey: process.env.S3_SECRET_ACCESS_KEY, // .env로 보안 설정
+//   region: 'ap-northeast-2', // aws에 설정한 나의 위치: 아시아 태평양(서울)
+// });
+// 개발모드
 const upload = multer({
-  storage: multerS3({
-    s3: new AWS.S3(), // 이렇게까지 하면 S3의 권한을 얻음, key랑 accessKey로
-    bucket: 'coding-factory-s3',
-    key(req, file, cd) {
-      cd(null, `original/${Date.now()}_${path.basename(file.originalname)}`);
+  storage: multer.diskStorage({
+    destination(req, file, done) {
+      done(null, 'uploads');
+    },
+    filename(req, file, done) {
+      const ext = path.extname(file.originalname); // filename: 고윤혁.png > 확장자 추출(.png)
+      const basename = path.basename(file.originalname, ext); // 고윤혁
+      done(null, basename + new Date().getTime() + ext); // 고윤혁2021070424239281.png
     },
   }),
   limits: { fileSize: 20 * 1024 * 1024 }, // 파일크기: 20MB
 }); // 지금은 하드디스크에 저장하지만 AWS 배포 시 storage 옵션만 S3 서비스로 갈아끼울 예정
+
+// // 이미지 업로드: fs, multer npm 라이브러리 사이트 참고, 배포모드
+// const upload = multer({
+//   storage: multerS3({
+//     s3: new AWS.S3(), // 이렇게까지 하면 S3의 권한을 얻음, key랑 accessKey로
+//     bucket: 'coding-factory-s3',
+//     key(req, file, cd) {
+//       cd(null, `original/${Date.now()}_${path.basename(file.originalname)}`);
+//     },
+//   }),
+//   limits: { fileSize: 20 * 1024 * 1024 }, // 파일크기: 20MB
+// });
 
 //* 생성하기 (postman Tools)
 // 게시글 작성
@@ -99,9 +113,14 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {
 
 router.post('/images', isLoggedIn, upload.array('image'), (req, res, next) => {
   console.log(req.files); // 업로드가 어떻게 됬는지 정보들이 담겨있음
-  res.json(req.files.map((v) => v.location.replace(/\/original\//, '/thumb/'))); // original에서 thumb 이미지를 가져옴
-  // location 자체에 주소가 담겨있음, PostFrom에 image src에 그대로 전달(backURL 필요 X)
-}); // POST /post/images, // upload.array(), upload.single(), upload.none()
+  res.json(req.files.map((v) => v.filename)); // 어디로 업로드 되었는지에 대한 파일명들을 프론트로 보내줌
+}); // POST /post/images
+
+// router.post('/images', isLoggedIn, upload.array('image'), (req, res, next) => {
+//   console.log(req.files); // 업로드가 어떻게 됬는지 정보들이 담겨있음
+//   res.json(req.files.map((v) => v.location.replace(/\/original\//, '/thumb/'))); // original에서 thumb 이미지를 가져옴
+//   // location 자체에 주소가 담겨있음, PostFrom에 image src에 그대로 전달(backURL 필요 X)
+// }); // POST /post/images, // upload.array(), upload.single(), upload.none()
 
 // 게시글 하나만 불러오기(공유하기)
 router.get('/:postId', async (req, res, next) => {

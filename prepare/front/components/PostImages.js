@@ -21,7 +21,12 @@ const PostImages = ({ images }) => {
   if (images.length === 1) {
     return (
       <>
-        <OneImage role="presentation" src={`${images[0].src}`} alt={images[0].src} onClick={onZoom} />
+        <OneImage
+          role="presentation"
+          src={`http://localhost:3065/${images[0].src}`}
+          alt={images[0].src}
+          onClick={onZoom}
+        />
         {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
       </>
     );
@@ -30,8 +35,18 @@ const PostImages = ({ images }) => {
     return (
       <>
         <div>
-          <TwoImage role="presentation" src={`${images[0].src}`} alt={images[0].src} onClick={onZoom} />
-          <TwoImage role="presentation" src={`${images[1].src}`} alt={images[1].src} onClick={onZoom} />
+          <TwoImage
+            role="presentation"
+            src={`http://localhost:3065/${images[0].src}`}
+            alt={images[0].src}
+            onClick={onZoom}
+          />
+          <TwoImage
+            role="presentation"
+            src={`http://localhost:3065/${images[1].src}`}
+            alt={images[1].src}
+            onClick={onZoom}
+          />
         </div>
         {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
       </>
@@ -41,7 +56,12 @@ const PostImages = ({ images }) => {
   return (
     <>
       <div>
-        <ImgRender role="presentation" src={`${images[0].src}`} alt={images[0].src} onClick={onZoom} />
+        <ImgRender
+          role="presentation"
+          src={`http://localhost:3065/${images[0].src}`}
+          alt={images[0].src}
+          onClick={onZoom}
+        />
         <Div role="presentation" onClick={onZoom}>
           <PlusOutlined />
           <br />
