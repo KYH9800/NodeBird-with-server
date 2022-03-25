@@ -12,6 +12,8 @@
 - express를 활용 router 구성, sequelize를 통한 mysql 데이터 조작
 - multer를 활용한 이미지 업로드
 
+## 기능 소개
+
 ### 로그인
 ![로그인_AdobeCreativeCloudExpress](https://user-images.githubusercontent.com/61128538/160061150-7b81c83a-c7e2-49ec-84c9-e220e1a5fab4.gif)
 
