@@ -1,6 +1,14 @@
 # NodeBird-with-server
 
 - 리액트를 기반하여 Next.js를 활용 트위터와 비슷한 SNS 서비스를 구현함.
+- SSR(Server Side Rendering)과 SEO(검색엔진최적화)를 위한 Next.js 활용
+- 상태관리를 위한 Redux 도입 (동기적으로 dispatch가 이루어짐)
+- 비동기적 상태관리를 위한(비동기적으로 dispatch가 이루어짐) Redux-saga 도입
+- styled-component와 antd를 활용하여 CSS 구성
+
+- 백엔드는 javaScript Runtime Node.js 활용
+- express를 활용 router 구성, sequelize를 통한 mysql 데이터 조작
+- multer를 활용한 이미지 업로드
 
 ### 로그인
 ![로그인_AdobeCreativeCloudExpress](https://user-images.githubusercontent.com/61128538/160061150-7b81c83a-c7e2-49ec-84c9-e220e1a5fab4.gif)
