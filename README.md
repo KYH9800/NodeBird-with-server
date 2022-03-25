@@ -1,7 +1,7 @@
 # NodeBird-with-server
 
 ### 로그인
-![로그인_AdobeCreativeCloudExpress](https://user-images.githubusercontent.com/61128538/160061150-7b81c83a-c7e2-49ec-84c9-e220e1a5fab4.gif)
+### ![로그인_AdobeCreativeCloudExpress](https://user-images.githubusercontent.com/61128538/160061150-7b81c83a-c7e2-49ec-84c9-e220e1a5fab4.gif)
 
 ### 로그아웃
 ![로그아웃_AdobeCreativeCloudExpress](https://user-images.githubusercontent.com/61128538/160061163-2475fd02-b6c5-4819-aa12-1416ff26768a.gif)
