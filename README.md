@@ -37,7 +37,7 @@
 ![사용자_게시글_모아보기_AdobeCreativeCloudExpress](https://user-images.githubusercontent.com/61128538/160061240-b5544495-25a4-4a56-b27c-ed31c886cd55.gif)
 
 ### 팔로우 및 팔로잉 기능
-![Uploading 팔로우_팔로잉_AdobeCreativeCloudExpress.gif…]()
+![팔로우_팔로잉_AdobeCreativeCloudExpress](https://user-images.githubusercontent.com/61128538/160061529-c3b08204-6509-4f66-933d-45b986d056f9.gif)
 
 ### 프로필 변경
 ![프로필_변경_AdobeCreativeCloudExpress](https://user-images.githubusercontent.com/61128538/160061251-eaaa7baf-febd-425e-ba0a-9a42f968da7e.gif)
