@@ -1,5 +1,7 @@
 # NodeBird-with-server
 
+- 리액트를 기반하여 Next.js를 활용 트위터와 비슷한 SNS 서비스를 구현함.
+
 ### 로그인
 ![로그인_AdobeCreativeCloudExpress](https://user-images.githubusercontent.com/61128538/160061150-7b81c83a-c7e2-49ec-84c9-e220e1a5fab4.gif)
 
