@@ -5,6 +5,8 @@
 - 상태관리를 위한 Redux 도입 (동기적으로 dispatch가 이루어짐)
 - 비동기적 상태관리를 위한(비동기적으로 dispatch가 이루어짐) Redux-saga 도입
 - styled-component와 antd를 활용하여 CSS 구성
+
+
 [백엔드]
 - javaScript Runtime Node.js 활용
 - express를 활용 router 구성, sequelize를 통한 mysql 데이터 조작
